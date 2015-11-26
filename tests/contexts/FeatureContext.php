@@ -4,10 +4,10 @@ namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
-use Clearcode\EHLibrary\Infrastructure\InMemoryBookRepository;
-use Clearcode\EHLibrary\Infrastructure\InMemoryLibrary;
-use Clearcode\EHLibrary\Infrastructure\InMemoryManagerRepository;
-use Clearcode\EHLibrary\Infrastructure\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryBookRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryLibrary;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryManagerRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;

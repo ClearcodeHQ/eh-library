@@ -1,8 +1,8 @@
 <?php
 
-namespace tests\Clearcode\EHLibrary\Infrastructure;
+namespace tests\Clearcode\EHLibrary\Infrastructure\Persistence;
 
-use Clearcode\EHLibrary\Infrastructure\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
 
 class InMemoryStorageTest extends \PHPUnit_Framework_TestCase
 {

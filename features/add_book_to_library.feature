@@ -3,7 +3,7 @@ Feature: Add book to library
   As a manager
   I need to be able to add book to library
 
-  Scenario: Add book to library
+  Scenario: Add book to library as Manager
     Given I am a Manager with id 123 and name "Gosia"
       And I have book with id 321 and title "The NeverEnding Story"
      When I add book with id 321 to the library

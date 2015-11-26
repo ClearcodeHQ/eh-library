@@ -1,9 +1,9 @@
 <?php
 
-namespace tests\Clearcode\EHLibrary\Infrastructure;
+namespace tests\Clearcode\EHLibrary\Infrastructure\Persistence;
 
-use Clearcode\EHLibrary\Infrastructure\InMemoryLibrary;
-use Clearcode\EHLibrary\Infrastructure\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryLibrary;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
 use Clearcode\EHLibrary\Model\Book;
 
 class InMemoryLibraryTest extends \PHPUnit_Framework_TestCase

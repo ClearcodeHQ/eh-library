@@ -1,6 +1,6 @@
 <?php
 
-namespace Clearcode\EHLibrary\Infrastructure;
+namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
 final class InMemoryStorage
 {
