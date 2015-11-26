@@ -26,4 +26,12 @@ class Book
     {
         return $this->bookId;
     }
+
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->title;
+    }
 }
