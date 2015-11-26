@@ -8,6 +8,7 @@ use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryLibrary;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryManagerRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Projection\InMemoryBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;
@@ -20,6 +21,8 @@ class FeatureContext extends BehatContext
     private $workerId;
     /** @var Library */
     private $library;
+    /** @var array */
+    private $view;
 
     /** @BeforeScenario */
     public function clearStorage()
@@ -38,9 +41,9 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^I am a Worker with id (\d+)$/
+     * @Given /^I am a Worker with id (\d+) and name "([^"]*)"$/
      */
-    public function iAmAWorkerWithId($workerId)
+    public function iAmAWorkerWithIdAndName($workerId)
     {
         $this->workerId = (int) $workerId;
     }
@@ -54,6 +57,21 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^there is book with id (\d+) and title "([^"]*)" in library$/
+     */
+    public function thereIsBookWithIdAndTitleInLibrary($bookId, $title)
+    {
+        $this->library->addBook(new Book($bookId, $title));
+    }
+
+    /**
+     * @Given /^there are no books in library$/
+     */
+    public function thereAreNoBooksInLibrary()
+    {
+    }
+
+    /**
      * @When /^I add book with id (\d+) to the library$/
      */
     public function iAddBookToTheLibrary($bookId)
@@ -63,6 +81,14 @@ class FeatureContext extends BehatContext
             $useCase->add($this->managerId, $bookId);
         } catch (\Exception $e) {
         }
+    }
+
+    /**
+     * @When /^I view books in library$/
+     */
+    public function iViewBooksInLibrary()
+    {
+        $this->view = (new InMemoryBooksInLibraryProjection())->get();
     }
 
     /**
@@ -79,6 +105,22 @@ class FeatureContext extends BehatContext
     public function theBookWithIdShouldNotBeAvailableInTheLibrary($bookId)
     {
         \PHPUnit_Framework_Assert::assertFalse($this->library->hasBook($bookId));
+    }
+
+    /**
+     * @Then /^I should see (\d+) book$/
+     */
+    public function iShouldSeeBook($booksCount)
+    {
+        \PHPUnit_Framework_Assert::assertCount((int) $booksCount, $this->view);
+    }
+
+    /**
+     * @Then /^I should not see any books$/
+     */
+    public function iShouldNotSeeAnyBooks()
+    {
+        \PHPUnit_Framework_Assert::assertEmpty($this->view);
     }
 
     private function bookRepository()
