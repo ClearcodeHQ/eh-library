@@ -3,8 +3,19 @@ Feature: Add book to library
   As a leader
   I need to be able to add book to library
 
-  @incomplete
   Scenario: Add book to library
-    Given I am a Leader
-     When I adds a book to the library
-     Then the book should be available in the library
+    Given I am a Leader with id 123
+      And I have book with id 321 and title "The NeverEnding Story"
+     When I add book with id 321 to the library
+     Then the book with id 321 should be available in the library
+
+  Scenario: Add book to library as Worker
+    Given I am a Worker with id 123
+      And I have book with id 321 and title "The NeverEnding Story"
+     When I add book with id 321 to the library
+     Then the book with id 321 should not be available in the library
+
+  Scenario: Add not existing book to library
+    Given I am a Leader with id 123
+     When I add book with id 999 to the library
+     Then the book with id 999 should not be available in the library
