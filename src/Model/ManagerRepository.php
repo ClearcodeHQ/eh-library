@@ -2,19 +2,19 @@
 
 namespace Clearcode\EHLibrary\Model;
 
-interface LeaderRepository
+interface ManagerRepository
 {
     /**
-     * @param Leader $book
+     * @param Manager $book
      */
-    public function add(Leader $book);
+    public function add(Manager $book);
 
     /**
      * @param int $bookId
      *
      * @throws \LogicException
      *
-     * @return Leader
+     * @return Manager
      */
     public function get($bookId);
 }

@@ -4,18 +4,18 @@ namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Infrastructure\InMemoryBookRepository;
-use Clearcode\EHLibrary\Infrastructure\InMemoryLeaderRepository;
 use Clearcode\EHLibrary\Infrastructure\InMemoryLibrary;
+use Clearcode\EHLibrary\Infrastructure\InMemoryManagerRepository;
 use Clearcode\EHLibrary\Infrastructure\InMemoryStorage;
 use Clearcode\EHLibrary\Model\Book;
-use Clearcode\EHLibrary\Model\Leader;
 use Clearcode\EHLibrary\Model\Library;
+use Clearcode\EHLibrary\Model\Manager;
 use Clearcode\EHLibrary\UseCase\AddBookToLibrary;
 
 class FeatureContext extends BehatContext
 {
     /** @var int */
-    private $leaderId;
+    private $managerId;
     /** @var int */
     private $workerId;
     /** @var Library */
@@ -29,12 +29,12 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^I am a Leader with id (\d+)$/
+     * @Given /^I am a Manager with id (\d+) and name "([^"]*)"$/
      */
-    public function iAmALeaderWithId($leaderId)
+    public function iAmAManagerWithIdAndName($managerId, $name)
     {
-        $this->leaderId = (int) $leaderId;
-        $this->leaderRepository()->add(new Leader($leaderId));
+        $this->managerId = (int) $managerId;
+        $this->managerRepository()->add(new Manager($managerId, $name));
     }
 
     /**
@@ -59,8 +59,8 @@ class FeatureContext extends BehatContext
     public function iAddBookToTheLibrary($bookId)
     {
         try {
-            $useCase = new AddBookToLibrary($this->bookRepository(), $this->leaderRepository(), $this->library);
-            $useCase->add($this->leaderId, $bookId);
+            $useCase = new AddBookToLibrary($this->bookRepository(), $this->managerRepository(), $this->library);
+            $useCase->add($this->managerId, $bookId);
         } catch (\Exception $e) {
         }
     }
@@ -86,8 +86,8 @@ class FeatureContext extends BehatContext
         return new InMemoryBookRepository();
     }
 
-    private function leaderRepository()
+    private function managerRepository()
     {
-        return new InMemoryLeaderRepository();
+        return new InMemoryManagerRepository();
     }
 }

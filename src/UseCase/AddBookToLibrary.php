@@ -3,37 +3,37 @@
 namespace Clearcode\EHLibrary\UseCase;
 
 use Clearcode\EHLibrary\Model\BookRepository;
-use Clearcode\EHLibrary\Model\LeaderRepository;
 use Clearcode\EHLibrary\Model\Library;
+use Clearcode\EHLibrary\Model\ManagerRepository;
 
 class AddBookToLibrary
 {
     /** @var BookRepository */
     private $books;
-    /** @var LeaderRepository */
-    private $leaders;
+    /** @var ManagerRepository */
+    private $managers;
     /** @var Library */
     private $library;
 
     /**
-     * @param BookRepository   $books
-     * @param LeaderRepository $leaders
-     * @param Library          $library
+     * @param BookRepository    $books
+     * @param ManagerRepository $managers
+     * @param Library           $library
      */
-    public function __construct(BookRepository $books, LeaderRepository $leaders, Library $library)
+    public function __construct(BookRepository $books, ManagerRepository $managers, Library $library)
     {
-        $this->books   = $books;
-        $this->leaders = $leaders;
-        $this->library = $library;
+        $this->books    = $books;
+        $this->managers = $managers;
+        $this->library  = $library;
     }
 
     /**
-     * @param int $leaderId
+     * @param int $managerId
      * @param int $bookId
      */
-    public function add($leaderId, $bookId)
+    public function add($managerId, $bookId)
     {
-        $this->leaders->get($leaderId);
+        $this->managers->get($managerId);
         $book = $this->books->get($bookId);
 
         $this->library->addBook($book);
