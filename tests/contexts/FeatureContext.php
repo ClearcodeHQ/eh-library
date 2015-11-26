@@ -3,6 +3,7 @@
 namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
+use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Infrastructure\InMemoryBookRepository;
 use Clearcode\EHLibrary\Infrastructure\InMemoryLibrary;
 use Clearcode\EHLibrary\Infrastructure\InMemoryManagerRepository;
@@ -10,7 +11,6 @@ use Clearcode\EHLibrary\Infrastructure\InMemoryStorage;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;
-use Clearcode\EHLibrary\UseCase\AddBookToLibrary;
 
 class FeatureContext extends BehatContext
 {

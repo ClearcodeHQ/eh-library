@@ -1,6 +1,6 @@
 <?php
 
-namespace Clearcode\EHLibrary\UseCase;
+namespace Clearcode\EHLibrary\Application\UseCase;
 
 use Clearcode\EHLibrary\Model\BookRepository;
 use Clearcode\EHLibrary\Model\Library;
