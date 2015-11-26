@@ -1,0 +1,5 @@
+default:
+    filters:
+        tags: ~@incomplete && ~@error-page
+    context:
+        class: tests\Clearcode\EHLibrary\contexts\FeatureContext
