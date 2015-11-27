@@ -5,6 +5,7 @@ namespace Clearcode\EHLibrary\Infrastructure\Projection;
 use Clearcode\EHLibrary\Application\Projection\BooksInLibraryProjection;
 use Clearcode\EHLibrary\Application\Projection\BookView;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Model\Book;
 
 class LocalBooksInLibraryProjection implements BooksInLibraryProjection
 {
@@ -21,7 +22,8 @@ class LocalBooksInLibraryProjection implements BooksInLibraryProjection
     {
         $views = [];
 
-        foreach ($this->storage->get('library_books') as $book) {
+        /** @var Book $book */
+        foreach ($this->storage->find('book_') as $book) {
             $views[] = new BookView($book->id(), $book->title());
         }
 

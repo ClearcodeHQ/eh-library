@@ -7,13 +7,11 @@ use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Application\UseCase\CreateBooking;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookingRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalLibrary;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalWorkerRepository;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
-use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;
 use Clearcode\EHLibrary\Model\Worker;
 
@@ -23,8 +21,6 @@ class FeatureContext extends BehatContext
     private $managerId;
     /** @var int */
     private $workerId;
-    /** @var Library */
-    private $library;
     /** @var array */
     private $view;
 
@@ -32,7 +28,6 @@ class FeatureContext extends BehatContext
     public function clearStorage()
     {
         LocalStorage::instance(true)->clear();
-        $this->library = new LocalLibrary();
     }
 
     /**
@@ -75,7 +70,6 @@ class FeatureContext extends BehatContext
     public function thereIsBookWithIdAndTitleInLibrary($bookId, $title)
     {
         $this->bookRepository()->add(new Book($bookId, $title));
-        $this->library->addBook(new Book($bookId, $title));
     }
 
     /**
