@@ -25,6 +25,25 @@ class LocalBookRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($bookId, $book->id());
     }
 
+    /** @test */
+    public function it_can_check_if_book_with_given_title_exists()
+    {
+        $title  = 'The NeverEnding Story';
+        $bookId = 1;
+
+        $this->repository->add(new Book($bookId, $title));
+
+        $this->assertTrue($this->repository->existsWithTitle($title));
+    }
+
+    /** @test */
+    public function it_can_check_if_book_with_given_title_does_not_exists()
+    {
+        $title = 'The NeverEnding Story';
+
+        $this->assertFalse($this->repository->existsWithTitle($title));
+    }
+
     /**
      * @test
      * @expectedException \LogicException

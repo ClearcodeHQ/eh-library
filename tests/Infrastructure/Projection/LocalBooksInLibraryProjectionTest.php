@@ -3,12 +3,15 @@
 namespace tests\Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\BookView;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
 
 class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var LocalBookRepository */
+    private $repository;
     /** @var LocalBooksInLibraryProjection */
     private $projection;
     /** @var LocalStorage */
@@ -17,8 +20,8 @@ class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_returns_books_in_library()
     {
-        $this->addBookToLibrary('The NeverEnding Story');
-        $this->addBookToLibrary('Fifty Shades of Grey');
+        $this->addBook('The NeverEnding Story');
+        $this->addBook('Fifty Shades of Grey');
 
         $books = $this->projection->get();
 
@@ -34,24 +37,20 @@ class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
         $this->storage = LocalStorage::instance(true);
         $this->storage->clear();
 
+        $this->repository = new LocalBookRepository();
         $this->projection = new LocalBooksInLibraryProjection();
     }
 
     /** {@inheritdoc} */
     protected function tearDown()
     {
+        $this->storage    = null;
+        $this->repository = null;
         $this->projection = null;
     }
 
-    private function addBookToLibrary($title)
+    private function addBook($title)
     {
-        if (!$this->storage->has('library_books')) {
-            $this->storage->save('library_books', []);
-        }
-
-        $books   = $this->storage->get('library_books');
-        $books[] = new Book(rand(1, 1000000), $title);
-
-        $this->storage->save('library_books', $books);
+        $this->repository->add(new Book(rand(1, 1000000), $title));
     }
 }

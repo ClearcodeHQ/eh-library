@@ -35,6 +35,24 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($value, $this->storage->get('value'));
     }
 
+    /** @test */
+    public function it_can_find_objects_matching_pattern()
+    {
+        $this->storage->save('matching_pattern_1', new \stdClass());
+        $this->storage->save('matching_pattern_2', new \stdClass());
+        $this->storage->save('mismatched_1', new \stdClass());
+
+        $objects = $this->storage->find('matching_');
+
+        $this->assertCount(2, $objects);
+    }
+
+    /** @test */
+    public function it_return_empty_when_no_objects_matching_pattern()
+    {
+        $this->assertEmpty($this->storage->find('matching_'));
+    }
+
     /**
      * @test
      * @expectedException \LogicException

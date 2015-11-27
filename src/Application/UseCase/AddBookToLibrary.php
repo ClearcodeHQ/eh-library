@@ -2,8 +2,8 @@
 
 namespace Clearcode\EHLibrary\Application\UseCase;
 
+use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookRepository;
-use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\ManagerRepository;
 
 /**
@@ -16,30 +16,30 @@ class AddBookToLibrary
     private $books;
     /** @var ManagerRepository */
     private $managers;
-    /** @var Library */
-    private $library;
 
     /**
      * @param BookRepository    $books
      * @param ManagerRepository $managers
-     * @param Library           $library
      */
-    public function __construct(BookRepository $books, ManagerRepository $managers, Library $library)
+    public function __construct(BookRepository $books, ManagerRepository $managers)
     {
         $this->books    = $books;
         $this->managers = $managers;
-        $this->library  = $library;
     }
 
     /**
-     * @param int $managerId
-     * @param int $bookId
+     * @param string $managerId
+     * @param string $bookId
+     * @param string $title
      */
-    public function add($managerId, $bookId)
+    public function add($managerId, $bookId, $title)
     {
         $this->managers->get($managerId);
-        $book = $this->books->get($bookId);
 
-        $this->library->addBook($book);
+        if ($this->books->existsWithTitle($title)) {
+            throw new \DomainException(sprintf('Book with title %s already exists', $title));
+        }
+
+        $this->books->add(new Book($bookId, $title));
     }
 }

@@ -57,6 +57,24 @@ final class LocalStorage
     }
 
     /**
+     * @param $pattern
+     *
+     * @return array
+     */
+    public function find($pattern)
+    {
+        $matching = [];
+
+        foreach ($this->storage as $key => $object) {
+            if (false !== strpos($key, $pattern)) {
+                $matching[] = $object;
+            }
+        }
+
+        return $matching;
+    }
+
+    /**
      * @param $key
      *
      * @return bool
