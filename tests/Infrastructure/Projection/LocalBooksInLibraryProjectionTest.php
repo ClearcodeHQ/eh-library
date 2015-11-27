@@ -31,7 +31,7 @@ class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = LocalStorage::instance();
+        $this->storage = LocalStorage::instance(true);
         $this->storage->clear();
 
         $this->projection = new LocalBooksInLibraryProjection();
@@ -46,12 +46,12 @@ class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
     private function addBookToLibrary($title)
     {
         if (!$this->storage->has('library_books')) {
-            $this->storage->add('library_books', []);
+            $this->storage->save('library_books', []);
         }
 
         $books   = $this->storage->get('library_books');
         $books[] = new Book(rand(1, 1000000), $title);
 
-        $this->storage->update('library_books', $books);
+        $this->storage->save('library_books', $books);
     }
 }

@@ -18,7 +18,7 @@ class LocalWorkerRepository implements WorkerRepository
     /** {@inheritdoc} */
     public function add(Worker $worker)
     {
-        $this->storage->add('worker_'.$worker->id(), $worker);
+        $this->storage->save('worker_'.$worker->id(), $worker);
     }
 
     /** {@inheritdoc} */

@@ -10,17 +10,20 @@ final class LocalStorage
 {
     /** @var LocalStorage */
     private static $instance;
-
+    /** @var string */
+    private $path = 'cache/database.db';
     /** @var array */
     private $storage = [];
 
     /**
+     * @param bool|false $testMode
+     *
      * @return LocalStorage
      */
-    public static function instance()
+    public static function instance($testMode = false)
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self($testMode);
         }
 
         return self::$instance;
@@ -30,9 +33,11 @@ final class LocalStorage
      * @param string $key
      * @param mixed  $value
      */
-    public function add($key, $value)
+    public function save($key, $value)
     {
         $this->storage[$key] = $value;
+
+        $this->write();
     }
 
     /**
@@ -52,15 +57,6 @@ final class LocalStorage
     }
 
     /**
-     * @param string $key
-     * @param mixed  $value
-     */
-    public function update($key, $value)
-    {
-        $this->add($key, $value);
-    }
-
-    /**
      * @param $key
      *
      * @return bool
@@ -73,9 +69,35 @@ final class LocalStorage
     public function clear()
     {
         $this->storage = [];
+
+        $this->write();
     }
 
-    private function __construct()
+    private function __construct($testMode)
     {
+        if ($testMode) {
+            \org\bovigo\vfs\vfsStream::setup('cache');
+            $this->path = 'vfs://'.$this->path;
+        }
+
+        $this->read();
+    }
+
+    private function read()
+    {
+        if (!file_exists($this->path)) {
+            $this->write();
+        }
+
+        $contents = file_get_contents($this->path);
+
+        $this->storage = unserialize($contents);
+    }
+
+    private function write()
+    {
+        $contents = serialize($this->storage);
+
+        file_put_contents($this->path, $contents);
     }
 }

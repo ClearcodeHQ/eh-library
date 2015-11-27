@@ -22,7 +22,7 @@ class LocalLibrary implements Library
         $this->storage = LocalStorage::instance();
 
         if (!$this->storage->has('library_books')) {
-            $this->storage->add('library_books', []);
+            $this->storage->save('library_books', []);
         }
 
         $this->books = $this->storage->get('library_books');
@@ -44,19 +44,19 @@ class LocalLibrary implements Library
     public function book($workerId, $bookId)
     {
         if (!$this->storage->has('bookings')) {
-            $this->storage->add('bookings', []);
+            $this->storage->save('bookings', []);
         }
 
         $bookings   = $this->storage->get('bookings');
         $bookings[] = ['worker' => $workerId, 'book' => $bookId];
 
-        $this->storage->update('bookings', $bookings);
+        $this->storage->save('bookings', $bookings);
     }
 
     public function hasBooking($workerId)
     {
         if (!$this->storage->has('bookings')) {
-            $this->storage->add('bookings', []);
+            $this->storage->save('bookings', []);
         }
 
         $bookings = $this->storage->get('bookings');
@@ -84,6 +84,6 @@ class LocalLibrary implements Library
 
     private function save()
     {
-        $this->storage->update('library_books', $this->books);
+        $this->storage->save('library_books', $this->books);
     }
 }

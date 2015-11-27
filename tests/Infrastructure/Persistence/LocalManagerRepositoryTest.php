@@ -36,7 +36,7 @@ class LocalManagerRepositoryTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        LocalStorage::instance()->clear();
+        LocalStorage::instance(true)->clear();
 
         $this->repository = new LocalManagerRepository();
     }

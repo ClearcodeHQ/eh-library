@@ -12,9 +12,17 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_is_singleton()
     {
-        $storage = LocalStorage::instance();
+        $storage = LocalStorage::instance(true);
 
         $this->assertSame($this->storage, $storage);
+    }
+
+    /** @test */
+    public function it_creates_database_file()
+    {
+        LocalStorage::instance(true);
+
+        $this->assertTrue(file_exists('vfs://cache/database.db'));
     }
 
     /** @test */
@@ -22,7 +30,7 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     {
         $value = new \stdClass();
 
-        $this->storage->add('value', $value);
+        $this->storage->save('value', $value);
 
         $this->assertSame($value, $this->storage->get('value'));
     }
@@ -39,7 +47,7 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_has_value()
     {
-        $this->storage->add('value', new \stdClass());
+        $this->storage->save('value', new \stdClass());
 
         $this->assertTrue($this->storage->has('value'));
     }
@@ -53,8 +61,8 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_update_value()
     {
-        $this->storage->add('value', 'val1');
-        $this->storage->update('value', 'val2');
+        $this->storage->save('value', 'val1');
+        $this->storage->save('value', 'val2');
 
         $this->assertEquals('val2', $this->storage->get('value'));
     }
@@ -65,7 +73,7 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function it_can_be_cleared()
     {
-        $this->storage->add('value', new \stdClass());
+        $this->storage->save('value', new \stdClass());
         $this->storage->clear();
 
         $this->storage->get('value');
@@ -74,7 +82,7 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = LocalStorage::instance();
+        $this->storage = LocalStorage::instance(true);
         $this->storage->clear();
     }
 

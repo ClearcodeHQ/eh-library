@@ -18,7 +18,7 @@ class LocalBookRepository implements BookRepository
     /** {@inheritdoc} */
     public function add(Book $book)
     {
-        $this->storage->add('book_'.$book->id(), $book);
+        $this->storage->save('book_'.$book->id(), $book);
     }
 
     /** {@inheritdoc} */

@@ -18,7 +18,7 @@ class LocalManagerRepository implements ManagerRepository
     /** {@inheritdoc} */
     public function add(Manager $manager)
     {
-        $this->storage->add('manager_'.$manager->id(), $manager);
+        $this->storage->save('manager_'.$manager->id(), $manager);
     }
 
     /** {@inheritdoc} */

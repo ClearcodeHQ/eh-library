@@ -30,7 +30,7 @@ class FeatureContext extends BehatContext
     /** @BeforeScenario */
     public function clearStorage()
     {
-        LocalStorage::instance()->clear();
+        LocalStorage::instance(true)->clear();
         $this->library = new LocalLibrary();
     }
 
