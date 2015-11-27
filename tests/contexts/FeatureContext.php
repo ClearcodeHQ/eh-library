@@ -4,7 +4,7 @@ namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
-use Clearcode\EHLibrary\Application\UseCase\BookingBook;
+use Clearcode\EHLibrary\Application\UseCase\CreateBooking;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalLibrary;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
@@ -97,12 +97,12 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I booking book with id (\d+)$/
+     * @When /^I create booking for book with id (\d+)$/
      */
     public function iBookingBookWithId($bookId)
     {
         try {
-            $useCase = new BookingBook($this->workerRepository(), $this->bookRepository(), $this->library);
+            $useCase = new CreateBooking($this->workerRepository(), $this->bookRepository(), $this->library);
             $useCase->book($this->workerId, $bookId);
         } catch (\Exception $e) {
         }
