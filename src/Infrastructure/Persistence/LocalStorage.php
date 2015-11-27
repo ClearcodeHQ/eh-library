@@ -2,10 +2,6 @@
 
 namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
-/**
- * @todo create local storage
- * @todo it should have methods: save and get, no more
- */
 final class LocalStorage
 {
     /** @var LocalStorage */
@@ -74,16 +70,6 @@ final class LocalStorage
         return $matching;
     }
 
-    /**
-     * @param $key
-     *
-     * @return bool
-     */
-    public function has($key)
-    {
-        return isset($this->storage[$key]);
-    }
-
     public function clear()
     {
         $this->storage = [];
@@ -117,5 +103,10 @@ final class LocalStorage
         $contents = serialize($this->storage);
 
         file_put_contents($this->path, $contents);
+    }
+
+    private function has($key)
+    {
+        return isset($this->storage[$key]);
     }
 }

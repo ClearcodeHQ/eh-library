@@ -63,20 +63,6 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_has_value()
-    {
-        $this->storage->save('value', new \stdClass());
-
-        $this->assertTrue($this->storage->has('value'));
-    }
-
-    /** @test */
-    public function it_has_not_value()
-    {
-        $this->assertFalse($this->storage->has('value'));
-    }
-
-    /** @test */
     public function it_can_update_value()
     {
         $this->storage->save('value', 'val1');
