@@ -2,8 +2,9 @@
 
 namespace Clearcode\EHLibrary\Application\UseCase;
 
+use Clearcode\EHLibrary\Model\Booking;
+use Clearcode\EHLibrary\Model\BookingRepository;
 use Clearcode\EHLibrary\Model\BookRepository;
-use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\WorkerRepository;
 
 /**
@@ -18,19 +19,19 @@ class CreateBooking
     private $workers;
     /** @var BookRepository */
     private $books;
-    /** @var Library */
-    private $library;
+    /** @var BookingRepository */
+    private $bookings;
 
     /**
-     * @param WorkerRepository $workers
-     * @param BookRepository   $books
-     * @param Library          $library
+     * @param WorkerRepository  $workers
+     * @param BookRepository    $books
+     * @param BookingRepository $bookings
      */
-    public function __construct(WorkerRepository $workers, BookRepository $books, Library $library)
+    public function __construct(WorkerRepository $workers, BookRepository $books, BookingRepository $bookings)
     {
-        $this->workers = $workers;
-        $this->books   = $books;
-        $this->library = $library;
+        $this->workers  = $workers;
+        $this->books    = $books;
+        $this->bookings = $bookings;
     }
 
     /**
@@ -42,8 +43,6 @@ class CreateBooking
         $this->workers->get($workerId);
         $this->books->get($bookId);
 
-        $this->bookings->add(new Booking($workerId));
-
-        $this->library->book($workerId, $bookId);
+        $this->bookings->add(new Booking($workerId, $bookId));
     }
 }

@@ -5,6 +5,7 @@ namespace tests\Clearcode\EHLibrary\contexts;
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Application\UseCase\CreateBooking;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookingRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalLibrary;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
@@ -102,7 +103,7 @@ class FeatureContext extends BehatContext
     public function iBookingBookWithId($bookId)
     {
         try {
-            $useCase = new CreateBooking($this->workerRepository(), $this->bookRepository(), $this->library);
+            $useCase = new CreateBooking($this->workerRepository(), $this->bookRepository(), $this->bookingRepository());
             $useCase->book($this->workerId, $bookId);
         } catch (\Exception $e) {
         }
@@ -153,7 +154,7 @@ class FeatureContext extends BehatContext
      */
     public function iShouldHaveBooking()
     {
-        \PHPUnit_Framework_Assert::assertTrue($this->library->hasBooking($this->workerId));
+        \PHPUnit_Framework_Assert::assertNotEmpty($this->bookingRepository()->ofWorker($this->workerId));
     }
 
     /**
@@ -161,12 +162,17 @@ class FeatureContext extends BehatContext
      */
     public function iShouldNotHaveBooking()
     {
-        \PHPUnit_Framework_Assert::assertFalse($this->library->hasBooking($this->workerId));
+        \PHPUnit_Framework_Assert::assertEmpty($this->bookingRepository()->ofWorker($this->workerId));
     }
 
     private function bookRepository()
     {
         return new LocalBookRepository();
+    }
+
+    private function bookingRepository()
+    {
+        return new LocalBookingRepository();
     }
 
     private function managerRepository()
