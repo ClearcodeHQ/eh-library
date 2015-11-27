@@ -7,10 +7,12 @@ use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\WorkerRepository;
 
 /**
+ * @deprecated
+ *
  * @todo rename this to create booking
  * @todo static constructor
  */
-class BookingBook
+class CreateBooking
 {
     /** @var WorkerRepository */
     private $workers;
@@ -39,6 +41,8 @@ class BookingBook
     {
         $this->workers->get($workerId);
         $this->books->get($bookId);
+
+        $this->bookings->add(new Booking($workerId));
 
         $this->library->book($workerId, $bookId);
     }
