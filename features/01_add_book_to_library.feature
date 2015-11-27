@@ -1,5 +1,5 @@
 Feature: Add book to library
-  In order to allow workers to borrow a book
+  In order to allow employees to borrow a book
   As a manager
   I need to be able to add book to library
 

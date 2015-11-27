@@ -1,6 +1,6 @@
 Feature: Views books in library
   In order to choose book to read
-  As a worker
+  As an employee
   I need to be able to view books in library
 
   Background:

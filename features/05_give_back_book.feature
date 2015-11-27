@@ -1,18 +1,17 @@
 @incomplete
 Feature: Give a book back
-  In order to read books by another workers
-  As a worker
-  I need to be able to give a book back to library
+  In order to give away book to another employee
+  As an employee
+  I want to give back a book
 
-  Scenario: Give a book back to library
-    Given I am a Worker with id 333 and name "Lukasz"
-      And I have a book with id 123 borrowed
-     When I give a book with id 123 back to library
-     Then I should not have booking
-      And I book 123 should be available in library
+  Given there are books
+      | id                                   | title                | authors    | isbn           |
+      | a7f0a5b1-b65a-4f9b-905b-082e255f6038 | Domain-Driven Design | Eric Evans | 0321125215     |
+    And there are reservations
+      | id                                   | book                                 | employee              |
+      | c4e8ca4b-4528-41ec-8700-856c2f186b00 | a7f0a5b1-b65a-4f9b-905b-082e255f6038 | employee@clearcode.cc |
 
-  Scenario: Give a not existing book back to library
-    Given I am a Worker with id 333 and name "Lukasz"
-     When I give a book with id 123 back to library
-     Then I should not have booking
-      And I book 123 should not be available in library
+  Scenario: Give a book back
+    Given book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00" was given away
+     When I give back a book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00"
+     Then there should be 0 reservations
