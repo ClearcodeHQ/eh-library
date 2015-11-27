@@ -49,6 +49,20 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^there are reservations$/
+     */
+    public function thereAreReservations(TableNode $table)
+    {
+        $reservationsData = $table->getRows();
+
+        array_shift($reservationsData);
+
+        foreach ($reservationsData as $reservationData) {
+            $this->reservationRepository()->add(new Reservation(Uuid::fromString($reservationData[0]), Uuid::fromString($reservationData[1]), $reservationData[2]));
+        }
+    }
+
+    /**
      * @When /^I add book$/
      */
     public function iAddBook(TableNode $table)
@@ -85,6 +99,13 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @When /^I give away book form reservation "([^"]*)"$/
+     */
+    public function iGiveAwayBookFormReservation($reservationId)
+    {
+    }
+
+    /**
      * @Then /^I should have (\d+) book in library$/
      */
     public function iShouldHaveBookInLibrary($expectedBookCount)
@@ -116,6 +137,13 @@ class FeatureContext extends BehatContext
     public function thereShouldBeReservationFor($expectedReservationCount, $bookId)
     {
         \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->countOfBook(Uuid::fromString($bookId)));
+    }
+
+    /**
+     * @Then /^book in reservation "([^"]*)" should be given away$/
+     */
+    public function bookInReservationShouldBeGivenAway($reservationId)
+    {
     }
 
     private function bookRepository()
