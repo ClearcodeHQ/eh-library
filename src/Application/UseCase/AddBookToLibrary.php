@@ -4,42 +4,28 @@ namespace Clearcode\EHLibrary\Application\UseCase;
 
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookRepository;
-use Clearcode\EHLibrary\Model\ManagerRepository;
 
-/**
- * @todo refactor this use case, use case should create book
- * @todo how about static constructors for use cases ?
- */
 class AddBookToLibrary
 {
     /** @var BookRepository */
     private $books;
-    /** @var ManagerRepository */
-    private $managers;
 
     /**
-     * @param BookRepository    $books
-     * @param ManagerRepository $managers
+     * @param BookRepository $books
      */
-    public function __construct(BookRepository $books, ManagerRepository $managers)
+    public function __construct(BookRepository $books)
     {
-        $this->books    = $books;
-        $this->managers = $managers;
+        $this->books = $books;
     }
 
     /**
-     * @param string $managerId
-     * @param string $bookId
-     * @param string $title
+     * @param $bookId
+     * @param $title
+     * @param $authors
+     * @param $isbn
      */
-    public function add($managerId, $bookId, $title)
+    public function add($bookId, $title, $authors, $isbn)
     {
-        $this->managers->get($managerId);
-
-        if ($this->books->existsWithTitle($title)) {
-            throw new \DomainException(sprintf('Book with title %s already exists', $title));
-        }
-
-        $this->books->add(new Book($bookId, $title));
+        $this->books->add(new Book($bookId, $title, $authors, $isbn));
     }
 }
