@@ -15,10 +15,10 @@ Feature: Reserving a book
       And there should be 1 reservation for "a7f0a5b1-b65a-4f9b-905b-082e255f6038"
 
   Scenario: Reserving another book
-   Given there is reservation for "38483e7a-e815-4657-bc94-adc83047577e" by "employee@clearcode.cc"
-    When I reserve book "a7f0a5b1-b65a-4f9b-905b-082e255f6038" as "another.employee@clearcode.cc"
-    Then there should be 2 reservations
-     And there should be 1 reservation for "a7f0a5b1-b65a-4f9b-905b-082e255f6038"
+    Given there is reservation for "38483e7a-e815-4657-bc94-adc83047577e" by "employee@clearcode.cc"
+     When I reserve book "a7f0a5b1-b65a-4f9b-905b-082e255f6038" as "another.employee@clearcode.cc"
+     Then there should be 2 reservations
+      And there should be 1 reservation for "a7f0a5b1-b65a-4f9b-905b-082e255f6038"
 
   Scenario: Reserving book again
     Given there is reservation for "38483e7a-e815-4657-bc94-adc83047577e" by "employee@clearcode.cc"

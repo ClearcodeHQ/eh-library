@@ -15,5 +15,5 @@ Feature: Views books in library
      Then I should see 3 books
 
   Scenario: List books paginated
-    When I list 2 page of books paginated by 2 books on page
-    Then I should see 1 book
+     When I list 2 page of books paginated by 2 books on page
+     Then I should see 1 book
