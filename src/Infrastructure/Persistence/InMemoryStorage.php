@@ -2,6 +2,9 @@
 
 namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
+/**
+ * @todo create local storage
+ */
 final class InMemoryStorage
 {
     /** @var self */

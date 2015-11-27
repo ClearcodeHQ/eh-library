@@ -6,6 +6,10 @@ use Clearcode\EHLibrary\Model\BookRepository;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\ManagerRepository;
 
+/**
+ * @todo refactor this use case, use case should create book
+ * @todo how about static constructors for use cases ?
+ */
 class AddBookToLibrary
 {
     /** @var BookRepository */
