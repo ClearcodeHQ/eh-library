@@ -1,16 +1,19 @@
 Feature: Views books in library
   In order to choose book to read
-  As a worker
+  As an employee
   I need to be able to view books in library
 
-  Scenario: View books in library
-    Given I am a Worker with id 123 and name "Lukasz"
-      And there is book with id 321 and title "The NeverEnding Story" in library
-     When I view books in library
-     Then I should see 1 book
+  Background:
+    Given I have books in library
+      | id                                   | title                | authors                                      | isbn           |
+      | a7f0a5b1-b65a-4f9b-905b-082e255f6038 | Domain-Driven Design | Eric Evans                                   | 0321125215     |
+      | 38483e7a-e815-4657-bc94-adc83047577e | REST in Practice     | Jim Webber, Savas Parastatidis, Ian Robinson | 978-0596805821 |
+      | 979b4f4e-6c87-456a-a8b3-be6cff32b660 | Clean Code           | Robert C. Martin                             | 978-0132350884 |
 
-  Scenario: View books in empty library
-    Given I am a Worker with id 123 and name "Lukasz"
-      And there are no books in library
-     When I view books in library
-     Then I should not see any books
+  Scenario: List books in library
+     When I list books
+     Then I should see 3 books
+
+  Scenario: List books paginated
+    When I list 2 page of books paginated by 2 books on page
+    Then I should see 1 book
