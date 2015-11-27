@@ -5,12 +5,12 @@ namespace tests\Clearcode\EHLibrary\contexts;
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Application\UseCase\BookingBook;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryBookRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryLibrary;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryManagerRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryWorkerRepository;
-use Clearcode\EHLibrary\Infrastructure\Projection\InMemoryBooksInLibraryProjection;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalLibrary;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalWorkerRepository;
+use Clearcode\EHLibrary\Infrastructure\Projection\LocalBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;
@@ -30,8 +30,8 @@ class FeatureContext extends BehatContext
     /** @BeforeScenario */
     public function clearStorage()
     {
-        InMemoryStorage::instance()->clear();
-        $this->library = new InMemoryLibrary();
+        LocalStorage::instance()->clear();
+        $this->library = new LocalLibrary();
     }
 
     /**
@@ -113,7 +113,7 @@ class FeatureContext extends BehatContext
      */
     public function iViewBooksInLibrary()
     {
-        $this->view = (new InMemoryBooksInLibraryProjection())->get();
+        $this->view = (new LocalBooksInLibraryProjection())->get();
     }
 
     /**
@@ -166,16 +166,16 @@ class FeatureContext extends BehatContext
 
     private function bookRepository()
     {
-        return new InMemoryBookRepository();
+        return new LocalBookRepository();
     }
 
     private function managerRepository()
     {
-        return new InMemoryManagerRepository();
+        return new LocalManagerRepository();
     }
 
     private function workerRepository()
     {
-        return new InMemoryWorkerRepository();
+        return new LocalWorkerRepository();
     }
 }

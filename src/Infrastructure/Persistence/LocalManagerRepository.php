@@ -5,14 +5,14 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 use Clearcode\EHLibrary\Model\Manager;
 use Clearcode\EHLibrary\Model\ManagerRepository;
 
-class InMemoryManagerRepository implements ManagerRepository
+class LocalManagerRepository implements ManagerRepository
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     public function __construct()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
     }
 
     /** {@inheritdoc} */

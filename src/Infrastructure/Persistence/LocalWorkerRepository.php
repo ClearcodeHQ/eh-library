@@ -5,14 +5,14 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 use Clearcode\EHLibrary\Model\Worker;
 use Clearcode\EHLibrary\Model\WorkerRepository;
 
-class InMemoryWorkerRepository implements WorkerRepository
+class LocalWorkerRepository implements WorkerRepository
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     public function __construct()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
     }
 
     /** {@inheritdoc} */

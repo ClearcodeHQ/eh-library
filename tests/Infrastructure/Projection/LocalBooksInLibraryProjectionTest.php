@@ -3,15 +3,15 @@
 namespace tests\Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\BookView;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
-use Clearcode\EHLibrary\Infrastructure\Projection\InMemoryBooksInLibraryProjection;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Infrastructure\Projection\LocalBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
 
-class InMemoryBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
+class LocalBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var InMemoryBooksInLibraryProjection */
+    /** @var LocalBooksInLibraryProjection */
     private $projection;
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     /** @test */
@@ -31,10 +31,10 @@ class InMemoryBooksInLibraryProjectionTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
         $this->storage->clear();
 
-        $this->projection = new InMemoryBooksInLibraryProjection();
+        $this->projection = new LocalBooksInLibraryProjection();
     }
 
     /** {@inheritdoc} */

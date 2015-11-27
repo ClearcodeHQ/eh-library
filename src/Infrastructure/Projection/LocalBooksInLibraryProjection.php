@@ -4,16 +4,16 @@ namespace Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\BooksInLibraryProjection;
 use Clearcode\EHLibrary\Application\Projection\BookView;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 
-class InMemoryBooksInLibraryProjection implements BooksInLibraryProjection
+class LocalBooksInLibraryProjection implements BooksInLibraryProjection
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     public function __construct()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
     }
 
     /** {@inheritdoc} */

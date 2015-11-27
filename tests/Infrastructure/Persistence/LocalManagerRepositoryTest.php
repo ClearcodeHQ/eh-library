@@ -2,13 +2,13 @@
 
 namespace tests\Clearcode\EHLibrary\Infrastructure\Persistence;
 
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryManagerRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Model\Manager;
 
-class InMemoryManagerRepositoryTest extends \PHPUnit_Framework_TestCase
+class LocalManagerRepositoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var InMemoryManagerRepository */
+    /** @var LocalManagerRepository */
     private $repository;
 
     /** @test */
@@ -36,9 +36,9 @@ class InMemoryManagerRepositoryTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        InMemoryStorage::instance()->clear();
+        LocalStorage::instance()->clear();
 
-        $this->repository = new InMemoryManagerRepository();
+        $this->repository = new LocalManagerRepository();
     }
 
     /** {@inheritdoc} */

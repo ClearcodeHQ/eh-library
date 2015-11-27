@@ -8,17 +8,18 @@ use Clearcode\EHLibrary\Model\Library;
 /**
  * @todo simplify this class
  * @todo probably this class should work with objects instead of identifiers
+ * @todo probably needless
  */
-class InMemoryLibrary implements Library
+class LocalLibrary implements Library
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
     /** @var Book[] */
     private $books;
 
     public function __construct()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
 
         if (!$this->storage->has('library_books')) {
             $this->storage->add('library_books', []);

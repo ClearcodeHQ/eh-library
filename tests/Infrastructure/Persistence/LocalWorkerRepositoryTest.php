@@ -2,13 +2,13 @@
 
 namespace tests\Clearcode\EHLibrary\Infrastructure\Persistence;
 
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryWorkerRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalWorkerRepository;
 use Clearcode\EHLibrary\Model\Worker;
 
-class InMemoryWorkerRepositoryTest extends \PHPUnit_Framework_TestCase
+class LocalWorkerRepositoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var InMemoryWorkerRepository */
+    /** @var LocalWorkerRepository */
     private $repository;
 
     /** @test */
@@ -36,9 +36,9 @@ class InMemoryWorkerRepositoryTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        InMemoryStorage::instance()->clear();
+        LocalStorage::instance()->clear();
 
-        $this->repository = new InMemoryWorkerRepository();
+        $this->repository = new LocalWorkerRepository();
     }
 
     /** {@inheritdoc} */

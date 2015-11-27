@@ -6,16 +6,16 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
  * @todo create local storage
  * @todo it should have methods: save and get, no more
  */
-final class InMemoryStorage
+final class LocalStorage
 {
-    /** @var self */
+    /** @var LocalStorage */
     private static $instance;
 
     /** @var array */
     private $storage = [];
 
     /**
-     * @return InMemoryStorage
+     * @return LocalStorage
      */
     public static function instance()
     {

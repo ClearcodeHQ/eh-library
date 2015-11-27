@@ -2,17 +2,17 @@
 
 namespace tests\Clearcode\EHLibrary\Infrastructure\Persistence;
 
-use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 
-class InMemoryStorageTest extends \PHPUnit_Framework_TestCase
+class LocalStorageTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     /** @test */
     public function it_is_singleton()
     {
-        $storage = InMemoryStorage::instance();
+        $storage = LocalStorage::instance();
 
         $this->assertSame($this->storage, $storage);
     }
@@ -74,7 +74,7 @@ class InMemoryStorageTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
         $this->storage->clear();
     }
 

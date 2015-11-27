@@ -5,14 +5,14 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookRepository;
 
-class InMemoryBookRepository implements BookRepository
+class LocalBookRepository implements BookRepository
 {
-    /** @var InMemoryStorage */
+    /** @var LocalStorage */
     private $storage;
 
     public function __construct()
     {
-        $this->storage = InMemoryStorage::instance();
+        $this->storage = LocalStorage::instance();
     }
 
     /** {@inheritdoc} */
