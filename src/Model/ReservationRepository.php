@@ -2,6 +2,8 @@
 
 namespace Clearcode\EHLibrary\Model;
 
+use Ramsey\Uuid\UuidInterface;
+
 interface ReservationRepository
 {
     /**
@@ -10,13 +12,13 @@ interface ReservationRepository
     public function add(Reservation $booking);
 
     /**
-     * @param int $bookId
+     * @param UuidInterface $bookId
      *
      * @throws \LogicException
      *
      * @return Reservation[]
      */
-    public function countOfBook($bookId);
+    public function countOfBook(UuidInterface $bookId);
 
     /**
      * @return int

@@ -7,6 +7,8 @@ use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Model\Book;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,8 +22,8 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_returns_books_in_library()
     {
-        $this->addBook('a7f0a5b1-b65a-4f9b-905b-082e255f6038', 'Domain-Driven Design', 'Eric Evans', '0321125215');
-        $this->addBook('38483e7a-e815-4657-bc94-adc83047577e', 'REST in Practice', 'Jim Webber, Savas Parastatidis, Ian Robinson', '978-0596805821');
+        $this->addBook(Uuid::fromString('a7f0a5b1-b65a-4f9b-905b-082e255f6038'), 'Domain-Driven Design', 'Eric Evans', '0321125215');
+        $this->addBook(Uuid::fromString('38483e7a-e815-4657-bc94-adc83047577e'), 'REST in Practice', 'Jim Webber, Savas Parastatidis, Ian Robinson', '978-0596805821');
 
         $books = $this->projection->get();
 
@@ -37,9 +39,9 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_returns_books_in_library_paginated()
     {
-        $this->addBook('a7f0a5b1-b65a-4f9b-905b-082e255f6038', 'Domain-Driven Design', 'Eric Evans', '0321125215');
-        $this->addBook('38483e7a-e815-4657-bc94-adc83047577e', 'REST in Practice', 'Jim Webber, Savas Parastatidis, Ian Robinson', '978-0596805821');
-        $this->addBook('979b4f4e-6c87-456a-a8b3-be6cff32b660', 'Clean Code', 'Robert C. Martin', '978-0132350884');
+        $this->addBook(Uuid::fromString('a7f0a5b1-b65a-4f9b-905b-082e255f6038'), 'Domain-Driven Design', 'Eric Evans', '0321125215');
+        $this->addBook(Uuid::fromString('38483e7a-e815-4657-bc94-adc83047577e'), 'REST in Practice', 'Jim Webber, Savas Parastatidis, Ian Robinson', '978-0596805821');
+        $this->addBook(Uuid::fromString('979b4f4e-6c87-456a-a8b3-be6cff32b660'), 'Clean Code', 'Robert C. Martin', '978-0132350884');
 
         $books = $this->projection->get(2, 2);
 
@@ -67,7 +69,7 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
         $this->projection = null;
     }
 
-    private function addBook($bookId, $title, $authors, $isbn)
+    private function addBook(UuidInterface $bookId, $title, $authors, $isbn)
     {
         $this->repository->add(new Book($bookId, $title, $authors, $isbn));
     }

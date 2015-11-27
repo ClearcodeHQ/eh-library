@@ -24,7 +24,7 @@ class LocalListOfBooksProjection implements ListOfBooksProjection
 
         /** @var Book $book */
         foreach ($this->storage->find('book_') as $book) {
-            $views[] = new BookView($book->id(), $book->title(), $book->authors(), $book->isbn());
+            $views[] = new BookView((string) $book->id(), $book->title(), $book->authors(), $book->isbn());
         }
 
         if (null !== $booksPerPage) {

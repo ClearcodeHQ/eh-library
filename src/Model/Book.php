@@ -2,9 +2,11 @@
 
 namespace Clearcode\EHLibrary\Model;
 
+use Ramsey\Uuid\UuidInterface;
+
 class Book
 {
-    /** @var string */
+    /** @var UuidInterface */
     private $bookId;
     /** @var string */
     private $title;
@@ -14,12 +16,12 @@ class Book
     private $isbn;
 
     /**
-     * @param string $bookId
-     * @param string $title
-     * @param string $authors
-     * @param string $isbn
+     * @param UuidInterface $bookId
+     * @param string        $title
+     * @param string        $authors
+     * @param string        $isbn
      */
-    public function __construct($bookId, $title, $authors, $isbn)
+    public function __construct(UuidInterface $bookId, $title, $authors, $isbn)
     {
         $this->bookId  = $bookId;
         $this->title   = $title;
@@ -28,7 +30,7 @@ class Book
     }
 
     /**
-     * @return string
+     * @return UuidInterface
      */
     public function id()
     {

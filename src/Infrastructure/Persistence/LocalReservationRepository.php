@@ -4,6 +4,7 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
 use Clearcode\EHLibrary\Model\Reservation;
 use Clearcode\EHLibrary\Model\ReservationRepository;
+use Ramsey\Uuid\UuidInterface;
 
 class LocalReservationRepository implements ReservationRepository
 {
@@ -22,13 +23,13 @@ class LocalReservationRepository implements ReservationRepository
     }
 
     /** {@inheritdoc} */
-    public function countOfBook($bookId)
+    public function countOfBook(UuidInterface $bookId)
     {
         $reservations = [];
 
         /** @var Reservation $reservation */
         foreach ($this->storage->find('reservation_') as $reservation) {
-            if ($reservation->bookId() == $bookId) {
+            if ($reservation->bookId()->equals($bookId)) {
                 $reservations[] = $reservation;
             }
         }

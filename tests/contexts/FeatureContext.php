@@ -12,6 +12,7 @@ use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Reservation;
+use Ramsey\Uuid\Uuid;
 
 class FeatureContext extends BehatContext
 {
@@ -35,7 +36,7 @@ class FeatureContext extends BehatContext
         array_shift($booksData);
 
         foreach ($booksData as $bookData) {
-            $this->bookRepository()->add(new Book($bookData[0], $bookData[1], $bookData[2], $bookData[3]));
+            $this->bookRepository()->add(new Book(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]));
         }
     }
 
@@ -44,7 +45,7 @@ class FeatureContext extends BehatContext
      */
     public function thereIsReservationForBy($bookId, $email)
     {
-        $this->reservationRepository()->add(new Reservation($bookId, $email));
+        $this->reservationRepository()->add(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
     }
 
     /**
@@ -114,7 +115,7 @@ class FeatureContext extends BehatContext
      */
     public function thereShouldBeReservationFor($expectedReservationCount, $bookId)
     {
-        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->countOfBook($bookId));
+        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->countOfBook(Uuid::fromString($bookId)));
     }
 
     private function bookRepository()
