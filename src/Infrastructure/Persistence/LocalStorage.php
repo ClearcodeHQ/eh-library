@@ -53,6 +53,20 @@ final class LocalStorage
     }
 
     /**
+     * @param $key
+     */
+    public function remove($key)
+    {
+        if (!$this->has($key)) {
+            throw new \LogicException(sprintf('There is no object "%s"', $key));
+        }
+
+        unset($this->storage[$key]);
+
+        $this->write();
+    }
+
+    /**
      * @param $pattern
      *
      * @return array

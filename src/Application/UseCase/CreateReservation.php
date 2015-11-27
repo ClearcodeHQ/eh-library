@@ -9,14 +9,14 @@ use Ramsey\Uuid\Uuid;
 class CreateReservation
 {
     /** @var ReservationRepository */
-    private $bookings;
+    private $reservations;
 
     /**
      * @param ReservationRepository $bookings
      */
     public function __construct(ReservationRepository $bookings)
     {
-        $this->bookings = $bookings;
+        $this->reservations = $bookings;
     }
 
     /**
@@ -25,6 +25,6 @@ class CreateReservation
      */
     public function create($bookId, $email)
     {
-        $this->bookings->add(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
+        $this->reservations->add(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
     }
 }

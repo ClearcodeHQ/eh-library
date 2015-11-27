@@ -35,6 +35,28 @@ class LocalStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($value, $this->storage->get('value'));
     }
 
+    /**
+     * @test
+     * @expectedException \LogicException
+     */
+    public function it_can_remove_value()
+    {
+        $this->storage->save('value', new \stdClass());
+
+        $this->storage->remove('value');
+
+        $this->storage->get('value');
+    }
+
+    /**
+     * @test
+     * @expectedException \LogicException
+     */
+    public function it_can_not_remove_not_existing_value()
+    {
+        $this->storage->remove('value');
+    }
+
     /** @test */
     public function it_can_find_objects_matching_pattern()
     {

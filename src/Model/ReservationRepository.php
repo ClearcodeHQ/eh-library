@@ -7,9 +7,9 @@ use Ramsey\Uuid\UuidInterface;
 interface ReservationRepository
 {
     /**
-     * @param Reservation $booking
+     * @param Reservation $reservation
      */
-    public function add(Reservation $booking);
+    public function add(Reservation $reservation);
 
     /**
      * @param UuidInterface $bookId
@@ -24,4 +24,9 @@ interface ReservationRepository
      * @return int
      */
     public function count();
+
+    /**
+     * @param UuidInterface $reservationId
+     */
+    public function remove(UuidInterface $reservationId);
 }

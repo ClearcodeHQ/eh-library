@@ -17,9 +17,9 @@ class LocalReservationRepository implements ReservationRepository
     }
 
     /** {@inheritdoc} */
-    public function add(Reservation $booking)
+    public function add(Reservation $reservation)
     {
-        $this->storage->save('reservation_'.uniqid(), $booking);
+        $this->storage->save('reservation_'.(string) $reservation->id(), $reservation);
     }
 
     /** {@inheritdoc} */
@@ -41,5 +41,11 @@ class LocalReservationRepository implements ReservationRepository
     public function count()
     {
         return count($this->storage->find('reservation_'));
+    }
+
+    /** {@inheritdoc} */
+    public function remove(UuidInterface $reservationId)
+    {
+        $this->storage->remove('reservation_'.(string) $reservationId);
     }
 }

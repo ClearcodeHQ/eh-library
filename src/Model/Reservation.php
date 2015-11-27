@@ -8,10 +8,10 @@ class Reservation
 {
     /** @var UuidInterface */
     private $reservationId;
+    /** @var UuidInterface */
+    private $bookId;
     /** @var int */
     private $email;
-    /** @var int */
-    private $bookId;
 
     /**
      * @param UuidInterface $reservationId
@@ -31,5 +31,13 @@ class Reservation
     public function bookId()
     {
         return $this->bookId;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function id()
+    {
+        return $this->reservationId;
     }
 }
