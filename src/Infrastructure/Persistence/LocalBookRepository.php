@@ -22,21 +22,8 @@ class LocalBookRepository implements BookRepository
     }
 
     /** {@inheritdoc} */
-    public function existsWithTitle($title)
+    public function count()
     {
-        /** @var Book $book */
-        foreach ($this->storage->find('book_') as $book) {
-            if ($book->title() == $title) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /** {@inheritdoc} */
-    public function get($bookId)
-    {
-        return $this->storage->get('book_'.$bookId);
+        return count($this->storage->find('book_'));
     }
 }

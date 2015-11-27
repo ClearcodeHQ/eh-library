@@ -3,26 +3,20 @@
 namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
+use Behat\Gherkin\Node\TableNode;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
-use Clearcode\EHLibrary\Application\UseCase\CreateBooking;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookingRepository;
+use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalManagerRepository;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalWorkerRepository;
-use Clearcode\EHLibrary\Infrastructure\Projection\LocalBooksInLibraryProjection;
+use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Model\Book;
-use Clearcode\EHLibrary\Model\Manager;
-use Clearcode\EHLibrary\Model\Worker;
+use Clearcode\EHLibrary\Model\Reservation;
 
 class FeatureContext extends BehatContext
 {
-    /** @var int */
-    private $managerId;
-    /** @var int */
-    private $workerId;
     /** @var array */
-    private $view;
+    private $projection;
 
     /** @BeforeScenario */
     public function clearStorage()
@@ -31,147 +25,96 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^I am a Manager with id (\d+) and name "([^"]*)"$/
+     * @Given /^I have books in library$/
+     * @Given /^there are books$/
      */
-    public function iAmAManagerWithIdAndName($managerId, $name)
+    public function iHaveBooksInLibrary(TableNode $table)
     {
-        $this->managerId = (int) $managerId;
-        $this->managerRepository()->add(new Manager($managerId, $name));
-    }
+        $booksData = $table->getRows();
 
-    /**
-     * @Given /^I am a Worker with id (\d+) and name "([^"]*)"$/
-     */
-    public function iAmAWorkerWithIdAndName($workerId, $name)
-    {
-        $this->workerId = (int) $workerId;
-        $this->workerRepository()->add(new Worker($workerId, $name));
-    }
+        array_shift($booksData);
 
-    /**
-     * @Given /^library contains book with title "([^"]*)"$/
-     */
-    public function libraryContainsBookWithTitle($title)
-    {
-        $this->bookRepository()->add(new Book(rand(1, 100000), $title));
-    }
-
-    /**
-     * @Given /^I have book with id (\d+) and title "([^"]*)"$/
-     */
-    public function iHaveBookWithIdAndTitle($bookId, $title)
-    {
-        $this->bookRepository()->add(new Book($bookId, $title));
-    }
-
-    /**
-     * @Given /^there is book with id (\d+) and title "([^"]*)" in library$/
-     */
-    public function thereIsBookWithIdAndTitleInLibrary($bookId, $title)
-    {
-        $this->bookRepository()->add(new Book($bookId, $title));
-    }
-
-    /**
-     * @Given /^there are no books in library$/
-     */
-    public function thereAreNoBooksInLibrary()
-    {
-    }
-
-    /**
-     * @Given /^there is book with id (\d+) booked by Worker with id (\d+)$/
-     */
-    public function thereIsBookWithIdBookedByWorkerWithId($bookId)
-    {
-        $this->bookRepository()->add(new Book($bookId, 'test'));
-    }
-
-    /**
-     * @When /^I add book with id (\d+) and title "([^"]*)" to the library$/
-     */
-    public function iAddBookToTheLibrary($bookId, $title)
-    {
-        try {
-            $useCase = new AddBookToLibrary($this->bookRepository(), $this->managerRepository());
-            $useCase->add($this->managerId, $bookId, $title);
-        } catch (\Exception $e) {
+        foreach ($booksData as $bookData) {
+            $this->bookRepository()->add(new Book($bookData[0], $bookData[1], $bookData[2], $bookData[3]));
         }
     }
 
     /**
-     * @When /^I create booking for book with id (\d+)$/
+     * @Given /^there is reservation for "([^"]*)" by "([^"]*)"$/
      */
-    public function iBookingBookWithId($bookId)
+    public function thereIsReservationForBy($bookId, $email)
     {
-        try {
-            $useCase = new CreateBooking($this->workerRepository(), $this->bookRepository(), $this->bookingRepository());
-            $useCase->book($this->workerId, $bookId);
-        } catch (\Exception $e) {
-        }
+        $this->reservationRepository()->add(new Reservation($bookId, $email));
     }
 
     /**
-     * @When /^I view books in library$/
+     * @When /^I add book$/
      */
-    public function iViewBooksInLibrary()
+    public function iAddBook(TableNode $table)
     {
-        $this->view = (new LocalBooksInLibraryProjection())->get();
+        $bookData = $table->getRows()[1];
+
+        $useCase = new AddBookToLibrary($this->bookRepository());
+        $useCase->add($bookData[0], $bookData[1], $bookData[2], $bookData[3]);
     }
 
     /**
-     * @Then /^the book with id (\d+) should be available in the library$/
+     * @When /^I list books$/
      */
-    public function theBookWithIdShouldBeAvailableInTheLibrary($bookId)
+    public function iListBooks()
     {
-        \PHPUnit_Framework_Assert::assertInstanceOf(Book::class, $this->bookRepository()->get($bookId));
+        $this->projection = (new LocalListOfBooksProjection())->get();
     }
 
     /**
-     * @Then /^the book with id (\d+) should not be available in the library$/
+     * @When /^I list (\d+) page of books paginated by (\d+) books on page$/
      */
-    public function theBookWithIdShouldNotBeAvailableInTheLibrary($bookId)
+    public function iListPageOfBooksPaginatedByBooksOnPage($page, $booksPerPage)
     {
-        $book = null;
-
-        try {
-            $book = $this->bookRepository()->get($bookId);
-        } catch (\Exception $e) {
-        }
-
-        \PHPUnit_Framework_Assert::assertNull($book);
+        $this->projection = (new LocalListOfBooksProjection())->get($page, $booksPerPage);
     }
 
     /**
+     * @When /^I reserve book "([^"]*)" as "([^"]*)"$/
+     */
+    public function iReserveBookAs($bookId, $email)
+    {
+        $useCase = new CreateReservation($this->reservationRepository());
+        $useCase->create($bookId, $email);
+    }
+
+    /**
+     * @Then /^I should have (\d+) book in library$/
+     */
+    public function iShouldHaveBookInLibrary($expectedBookCount)
+    {
+        \PHPUnit_Framework_Assert::assertEquals($expectedBookCount, $this->bookRepository()->count());
+    }
+
+    /**
+     * @Then /^I should see (\d+) books$/
      * @Then /^I should see (\d+) book$/
      */
-    public function iShouldSeeBook($booksCount)
+    public function iShouldSeeBooks($expectedBookCount)
     {
-        \PHPUnit_Framework_Assert::assertCount((int) $booksCount, $this->view);
+        \PHPUnit_Framework_Assert::assertCount((int) $expectedBookCount, $this->projection);
     }
 
     /**
-     * @Then /^I should not see any books$/
+     * @Then /^there should be (\d+) reservation$/
+     * @Then /^there should be (\d+) reservations$/
      */
-    public function iShouldNotSeeAnyBooks()
+    public function thereShouldBeReservation($expectedReservationCount)
     {
-        \PHPUnit_Framework_Assert::assertEmpty($this->view);
+        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->count());
     }
 
     /**
-     * @Then /^I should have booking$/
+     * @Given /^there should be (\d+) reservation for "([^"]*)"$/
      */
-    public function iShouldHaveBooking()
+    public function thereShouldBeReservationFor($expectedReservationCount, $bookId)
     {
-        \PHPUnit_Framework_Assert::assertNotEmpty($this->bookingRepository()->ofWorker($this->workerId));
-    }
-
-    /**
-     * @Then /^I should not have booking$/
-     */
-    public function iShouldNotHaveBooking()
-    {
-        \PHPUnit_Framework_Assert::assertEmpty($this->bookingRepository()->ofWorker($this->workerId));
+        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->countOfBook($bookId));
     }
 
     private function bookRepository()
@@ -179,18 +122,8 @@ class FeatureContext extends BehatContext
         return new LocalBookRepository();
     }
 
-    private function bookingRepository()
+    private function reservationRepository()
     {
-        return new LocalBookingRepository();
-    }
-
-    private function managerRepository()
-    {
-        return new LocalManagerRepository();
-    }
-
-    private function workerRepository()
-    {
-        return new LocalWorkerRepository();
+        return new LocalReservationRepository();
     }
 }

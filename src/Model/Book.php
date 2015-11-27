@@ -4,23 +4,31 @@ namespace Clearcode\EHLibrary\Model;
 
 class Book
 {
-    /** @var int */
+    /** @var string */
     private $bookId;
     /** @var string */
     private $title;
+    /** @var string */
+    private $authors;
+    /** @var string */
+    private $isbn;
 
     /**
-     * @param int    $bookId
+     * @param string $bookId
      * @param string $title
+     * @param string $authors
+     * @param string $isbn
      */
-    public function __construct($bookId, $title)
+    public function __construct($bookId, $title, $authors, $isbn)
     {
-        $this->bookId = $bookId;
-        $this->title  = $title;
+        $this->bookId  = $bookId;
+        $this->title   = $title;
+        $this->authors = $authors;
+        $this->isbn    = $isbn;
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function id()
     {
@@ -33,5 +41,21 @@ class Book
     public function title()
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function authors()
+    {
+        return $this->authors;
+    }
+
+    /**
+     * @return string
+     */
+    public function isbn()
+    {
+        return $this->isbn;
     }
 }

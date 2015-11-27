@@ -12,45 +12,18 @@ class LocalBookRepositoryTest extends \PHPUnit_Framework_TestCase
     private $repository;
 
     /** @test */
-    public function it_can_get_book_with_id()
+    public function it_can_count_books()
     {
-        $title  = 'The NeverEnding Story';
-        $bookId = 1;
+        $this->repository->add(new Book('a7f0a5b1-b65a-4f9b-905b-082e255f6038', 'Domain-Driven Design', 'Eric Evans', '0321125215'));
+        $this->repository->add(new Book('38483e7a-e815-4657-bc94-adc83047577e', 'REST in Practice', 'Jim Webber, Savas Parastatidis, Ian Robinson', '978-0596805821'));
 
-        $this->repository->add(new Book($bookId, $title));
-
-        $book = $this->repository->get($bookId);
-
-        $this->assertInstanceOf(Book::class, $book);
-        $this->assertEquals($bookId, $book->id());
+        $this->assertEquals(2, $this->repository->count());
     }
 
     /** @test */
-    public function it_can_check_if_book_with_given_title_exists()
+    public function it_returns_zero_when_no_books()
     {
-        $title  = 'The NeverEnding Story';
-        $bookId = 1;
-
-        $this->repository->add(new Book($bookId, $title));
-
-        $this->assertTrue($this->repository->existsWithTitle($title));
-    }
-
-    /** @test */
-    public function it_can_check_if_book_with_given_title_does_not_exists()
-    {
-        $title = 'The NeverEnding Story';
-
-        $this->assertFalse($this->repository->existsWithTitle($title));
-    }
-
-    /**
-     * @test
-     * @expectedException \LogicException
-     */
-    public function it_fails_when_book_does_not_exists()
-    {
-        $this->repository->get(999);
+        $this->assertEquals(0, $this->repository->count());
     }
 
     /** {@inheritdoc} */

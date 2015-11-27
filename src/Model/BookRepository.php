@@ -10,18 +10,7 @@ interface BookRepository
     public function add(Book $book);
 
     /**
-     * @param $title
-     *
-     * @return bool
+     * @return int
      */
-    public function existsWithTitle($title);
-
-    /**
-     * @param int $bookId
-     *
-     * @throws \LogicException
-     *
-     * @return Book
-     */
-    public function get($bookId);
+    public function count();
 }
