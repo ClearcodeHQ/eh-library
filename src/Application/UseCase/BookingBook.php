@@ -8,6 +8,7 @@ use Clearcode\EHLibrary\Model\WorkerRepository;
 
 /**
  * @todo rename this to create booking
+ * @todo static constructor
  */
 class BookingBook
 {

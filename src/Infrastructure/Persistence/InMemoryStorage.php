@@ -4,6 +4,7 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
 /**
  * @todo create local storage
+ * @todo it should have methods: save and get, no more
  */
 final class InMemoryStorage
 {

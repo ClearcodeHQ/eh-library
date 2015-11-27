@@ -2,6 +2,13 @@
 
 namespace Clearcode\EHLibrary\Model;
 
+/**
+ * Library::books() ?
+ * Library::bookings() ?
+ *
+ * @todo introduce "Booking" in model
+ * @todo probably this class is needless
+ */
 interface Library
 {
     /**

@@ -77,6 +77,14 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^there is book with id (\d+) booked by Worker with id (\d+)$/
+     */
+    public function thereIsBookWithIdBookedByWorkerWithId($bookId)
+    {
+        $this->bookRepository()->add(new Book($bookId, 'test'));
+    }
+
+    /**
      * @When /^I add book with id (\d+) to the library$/
      */
     public function iAddBookToTheLibrary($bookId)
@@ -97,7 +105,6 @@ class FeatureContext extends BehatContext
             $useCase = new BookingBook($this->workerRepository(), $this->bookRepository(), $this->library);
             $useCase->book($this->workerId, $bookId);
         } catch (\Exception $e) {
-            var_dump(InMemoryStorage::instance());
         }
     }
 
