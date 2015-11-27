@@ -2,19 +2,22 @@
 
 namespace Clearcode\EHLibrary\Model;
 
+/**
+ * @todo manager probably should be hardcoded
+ */
 interface ManagerRepository
 {
     /**
-     * @param Manager $book
+     * @param Manager $manager
      */
-    public function add(Manager $book);
+    public function add(Manager $manager);
 
     /**
-     * @param int $bookId
+     * @param int $managerId
      *
      * @throws \LogicException
      *
      * @return Manager
      */
-    public function get($bookId);
+    public function get($managerId);
 }

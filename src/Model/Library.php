@@ -10,7 +10,20 @@ interface Library
     public function addBook(Book $book);
 
     /**
-     * @param $bookId
+     * @param int $bookId
+     * @param int $workerId
+     */
+    public function book($workerId, $bookId);
+
+    /**
+     * @param int $workerId
+     *
+     * @return bool
+     */
+    public function hasBooking($workerId);
+
+    /**
+     * @param int $bookId
      *
      * @return bool
      */

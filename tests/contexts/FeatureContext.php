@@ -4,14 +4,17 @@ namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
+use Clearcode\EHLibrary\Application\UseCase\BookingBook;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryLibrary;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryManagerRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\InMemoryWorkerRepository;
 use Clearcode\EHLibrary\Infrastructure\Projection\InMemoryBooksInLibraryProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Library;
 use Clearcode\EHLibrary\Model\Manager;
+use Clearcode\EHLibrary\Model\Worker;
 
 class FeatureContext extends BehatContext
 {
@@ -43,9 +46,10 @@ class FeatureContext extends BehatContext
     /**
      * @Given /^I am a Worker with id (\d+) and name "([^"]*)"$/
      */
-    public function iAmAWorkerWithIdAndName($workerId)
+    public function iAmAWorkerWithIdAndName($workerId, $name)
     {
         $this->workerId = (int) $workerId;
+        $this->workerRepository()->add(new Worker($workerId, $name));
     }
 
     /**
@@ -61,6 +65,7 @@ class FeatureContext extends BehatContext
      */
     public function thereIsBookWithIdAndTitleInLibrary($bookId, $title)
     {
+        $this->bookRepository()->add(new Book($bookId, $title));
         $this->library->addBook(new Book($bookId, $title));
     }
 
@@ -80,6 +85,19 @@ class FeatureContext extends BehatContext
             $useCase = new AddBookToLibrary($this->bookRepository(), $this->managerRepository(), $this->library);
             $useCase->add($this->managerId, $bookId);
         } catch (\Exception $e) {
+        }
+    }
+
+    /**
+     * @When /^I booking book with id (\d+)$/
+     */
+    public function iBookingBookWithId($bookId)
+    {
+        try {
+            $useCase = new BookingBook($this->workerRepository(), $this->bookRepository(), $this->library);
+            $useCase->book($this->workerId, $bookId);
+        } catch (\Exception $e) {
+            var_dump(InMemoryStorage::instance());
         }
     }
 
@@ -123,6 +141,22 @@ class FeatureContext extends BehatContext
         \PHPUnit_Framework_Assert::assertEmpty($this->view);
     }
 
+    /**
+     * @Then /^I should have booking$/
+     */
+    public function iShouldHaveBooking()
+    {
+        \PHPUnit_Framework_Assert::assertTrue($this->library->hasBooking($this->workerId));
+    }
+
+    /**
+     * @Then /^I should not have booking$/
+     */
+    public function iShouldNotHaveBooking()
+    {
+        \PHPUnit_Framework_Assert::assertFalse($this->library->hasBooking($this->workerId));
+    }
+
     private function bookRepository()
     {
         return new InMemoryBookRepository();
@@ -131,5 +165,10 @@ class FeatureContext extends BehatContext
     private function managerRepository()
     {
         return new InMemoryManagerRepository();
+    }
+
+    private function workerRepository()
+    {
+        return new InMemoryWorkerRepository();
     }
 }
