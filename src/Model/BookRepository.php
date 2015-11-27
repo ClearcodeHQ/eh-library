@@ -10,6 +10,13 @@ interface BookRepository
     public function add(Book $book);
 
     /**
+     * @param $title
+     *
+     * @return bool
+     */
+    public function existsWithTitle($title);
+
+    /**
      * @param int $bookId
      *
      * @throws \LogicException

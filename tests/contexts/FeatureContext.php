@@ -54,6 +54,14 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^library contains book with title "([^"]*)"$/
+     */
+    public function libraryContainsBookWithTitle($title)
+    {
+        $this->bookRepository()->add(new Book(rand(1, 100000), $title));
+    }
+
+    /**
      * @Given /^I have book with id (\d+) and title "([^"]*)"$/
      */
     public function iHaveBookWithIdAndTitle($bookId, $title)
@@ -86,13 +94,13 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I add book with id (\d+) to the library$/
+     * @When /^I add book with id (\d+) and title "([^"]*)" to the library$/
      */
-    public function iAddBookToTheLibrary($bookId)
+    public function iAddBookToTheLibrary($bookId, $title)
     {
         try {
-            $useCase = new AddBookToLibrary($this->bookRepository(), $this->managerRepository(), $this->library);
-            $useCase->add($this->managerId, $bookId);
+            $useCase = new AddBookToLibrary($this->bookRepository(), $this->managerRepository());
+            $useCase->add($this->managerId, $bookId, $title);
         } catch (\Exception $e) {
         }
     }
@@ -122,7 +130,7 @@ class FeatureContext extends BehatContext
      */
     public function theBookWithIdShouldBeAvailableInTheLibrary($bookId)
     {
-        \PHPUnit_Framework_Assert::assertTrue($this->library->hasBook($bookId));
+        \PHPUnit_Framework_Assert::assertInstanceOf(Book::class, $this->bookRepository()->get($bookId));
     }
 
     /**
@@ -130,7 +138,14 @@ class FeatureContext extends BehatContext
      */
     public function theBookWithIdShouldNotBeAvailableInTheLibrary($bookId)
     {
-        \PHPUnit_Framework_Assert::assertFalse($this->library->hasBook($bookId));
+        $book = null;
+
+        try {
+            $book = $this->bookRepository()->get($bookId);
+        } catch (\Exception $e) {
+        }
+
+        \PHPUnit_Framework_Assert::assertNull($book);
     }
 
     /**
