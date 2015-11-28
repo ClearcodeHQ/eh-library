@@ -16,9 +16,6 @@ use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @todo propably catching exceptions could be done with listener
- */
 class FeatureContext extends BehatContext
 {
     /** @var array */
@@ -88,8 +85,10 @@ class FeatureContext extends BehatContext
     {
         $bookData = $table->getRows()[1];
 
-        $useCase = new AddBookToLibrary($this->bookRepository());
-        $useCase->add($bookData[0], $bookData[1], $bookData[2], $bookData[3]);
+        $this->execute(function () use ($bookData) {
+            $useCase = new AddBookToLibrary($this->bookRepository());
+            $useCase->add($bookData[0], $bookData[1], $bookData[2], $bookData[3]);
+        });
     }
 
     /**
@@ -97,7 +96,9 @@ class FeatureContext extends BehatContext
      */
     public function iListBooks()
     {
-        $this->projection = (new LocalListOfBooksProjection())->get();
+        $this->project(function () {
+            return (new LocalListOfBooksProjection())->get();
+        });
     }
 
     /**
@@ -105,7 +106,9 @@ class FeatureContext extends BehatContext
      */
     public function iListPageOfBooksPaginatedByBooksOnPage($page, $booksPerPage)
     {
-        $this->projection = (new LocalListOfBooksProjection())->get($page, $booksPerPage);
+        $this->project(function () use ($page, $booksPerPage) {
+            return (new LocalListOfBooksProjection())->get($page, $booksPerPage);
+        });
     }
 
     /**
@@ -113,8 +116,10 @@ class FeatureContext extends BehatContext
      */
     public function iReserveBookAs($bookId, $email)
     {
-        $useCase = new CreateReservation($this->reservationRepository());
-        $useCase->create($bookId, $email);
+        $this->execute(function () use ($bookId, $email) {
+            $useCase = new CreateReservation($this->reservationRepository());
+            $useCase->create($bookId, $email);
+        });
     }
 
     /**
@@ -122,12 +127,10 @@ class FeatureContext extends BehatContext
      */
     public function iGiveAwayBookFormReservation($reservationId)
     {
-        try {
+        $this->execute(function () use ($reservationId) {
             $useCase = new GiveAwayBookInReservation($this->reservationRepository());
             $useCase->giveAway($reservationId);
-        } catch (\Exception $e) {
-            $this->exceptions[] = $e;
-        }
+        });
     }
 
     /**
@@ -135,8 +138,10 @@ class FeatureContext extends BehatContext
      */
     public function iGiveBackABookFromReservation($reservationId)
     {
-        $useCase = new GiveBackBookFromReservation($this->reservationRepository());
-        $useCase->giveBack($reservationId);
+        $this->execute(function () use ($reservationId) {
+            $useCase = new GiveBackBookFromReservation($this->reservationRepository());
+            $useCase->giveBack($reservationId);
+        });
     }
 
     /**
@@ -144,7 +149,9 @@ class FeatureContext extends BehatContext
      */
     public function iListReservationsForBook($bookId)
     {
-        $this->projection = (new LocalListReservationsForBookProjection())->get(Uuid::fromString($bookId));
+        $this->project(function () use ($bookId) {
+            return (new LocalListReservationsForBookProjection())->get(Uuid::fromString($bookId));
+        });
     }
 
     /**
@@ -197,17 +204,7 @@ class FeatureContext extends BehatContext
      */
     public function iShouldBeWarnedThatBookIsAlreadyGivenAway()
     {
-        //@todo listener for this, custom exception
-
-        $result = false;
-
-        foreach ($this->exceptions as $exception) {
-            if ($exception instanceof \DomainException) {
-                $result = true;
-            }
-        }
-
-        \PHPUnit_Framework_Assert::assertTrue($result);
+        \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(\DomainException::class));
     }
 
     private function bookRepository()
@@ -218,5 +215,26 @@ class FeatureContext extends BehatContext
     private function reservationRepository()
     {
         return new LocalReservationRepository();
+    }
+
+    private function execute(\Closure $useCase)
+    {
+        try {
+            $useCase();
+        } catch (\Exception $e) {
+            $this->exceptions[] = $e;
+        }
+    }
+
+    private function project(\Closure $projection)
+    {
+        $this->projection = $projection();
+    }
+
+    private function expectedExceptionWasThrown($expectedExceptionClass)
+    {
+        return !empty(array_filter($this->exceptions, function (\Exception $exception) use ($expectedExceptionClass) {
+            return $exception instanceof $expectedExceptionClass;
+        }));
     }
 }
