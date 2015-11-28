@@ -1,7 +1,7 @@
-Feature: Views bookings in library
+Feature: Views reservations in library
   In order to know how long I will be waiting for book
   As a employee
-  I need to be able to view list of bookings
+  I need to be able to view list of reservations
 
   Background:
     Given there are books
