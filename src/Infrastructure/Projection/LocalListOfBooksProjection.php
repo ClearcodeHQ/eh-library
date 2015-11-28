@@ -4,17 +4,17 @@ namespace Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\BookView;
 use Clearcode\EHLibrary\Application\Projection\ListOfBooksProjection;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Model\Book;
 
 class LocalListOfBooksProjection implements ListOfBooksProjection
 {
-    /** @var LocalStorage */
-    private $storage;
+    /** @var LocalBookRepository */
+    private $repository;
 
     public function __construct()
     {
-        $this->storage = LocalStorage::instance();
+        $this->repository = new LocalBookRepository();
     }
 
     /** {@inheritdoc} */
@@ -23,7 +23,7 @@ class LocalListOfBooksProjection implements ListOfBooksProjection
         $views = [];
 
         /** @var Book $book */
-        foreach ($this->storage->find('book_') as $book) {
+        foreach ($this->repository->getAll() as $book) {
             $views[] = new BookView((string) $book->id(), $book->title(), $book->authors(), $book->isbn());
         }
 

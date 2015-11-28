@@ -71,6 +71,6 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
 
     private function addBook(UuidInterface $bookId, $title, $authors, $isbn)
     {
-        $this->repository->add(new Book($bookId, $title, $authors, $isbn));
+        $this->repository->save(new Book($bookId, $title, $authors, $isbn));
     }
 }

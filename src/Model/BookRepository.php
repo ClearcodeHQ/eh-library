@@ -7,10 +7,10 @@ interface BookRepository
     /**
      * @param Book $book
      */
-    public function add(Book $book);
+    public function save(Book $book);
 
     /**
-     * @return int
+     * @return Book[]
      */
-    public function count();
+    public function getAll();
 }

@@ -31,6 +31,7 @@ class FeatureContext extends BehatContext
     public function clearStorage()
     {
         LocalStorage::instance(true)->clear();
+        $this->bookRepository()->clear();
     }
 
     /**
@@ -44,7 +45,7 @@ class FeatureContext extends BehatContext
         array_shift($booksData);
 
         foreach ($booksData as $bookData) {
-            $this->bookRepository()->add(new Book(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]));
+            $this->bookRepository()->save(new Book(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]));
         }
     }
 
@@ -152,7 +153,7 @@ class FeatureContext extends BehatContext
      */
     public function iShouldHaveBookInLibrary($expectedBookCount)
     {
-        \PHPUnit_Framework_Assert::assertEquals($expectedBookCount, $this->bookRepository()->count());
+        \PHPUnit_Framework_Assert::assertCount((int) $expectedBookCount, $this->bookRepository()->getAll());
     }
 
     /**

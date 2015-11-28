@@ -27,6 +27,6 @@ class AddBookToLibrary
      */
     public function add($bookId, $title, $authors, $isbn)
     {
-        $this->books->add(new Book(Uuid::fromString($bookId), $title, $authors, $isbn));
+        $this->books->save(new Book(Uuid::fromString($bookId), $title, $authors, $isbn));
     }
 }
