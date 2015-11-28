@@ -4,40 +4,39 @@ namespace Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\ListReservationsForBookProjection;
 use Clearcode\EHLibrary\Application\Projection\ReservationView;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
+use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Model\Reservation;
+use Clearcode\EHLibrary\Model\ReservationRepository;
 use Ramsey\Uuid\UuidInterface;
 
 class LocalListReservationsForBookProjection implements ListReservationsForBookProjection
 {
-    /** @var LocalStorage */
-    private $storage;
+    /** @var ReservationRepository */
+    private $repository;
 
     public function __construct()
     {
-        $this->storage = LocalStorage::instance();
+        $this->repository = new LocalReservationRepository();
     }
 
     /** {@inheritdoc} */
     public function get(UuidInterface $bookId)
     {
-        $reservations = [];
+        $views = [];
 
-        $allReservations = $this->storage->find('reservation_');
-
-        /** @var Reservation $singleReservation */
-        foreach ($allReservations as $singleReservation) {
-            $givenAwayAt = null;
-
-            if ($singleReservation->isGivenAway()) {
-                $givenAwayAt = $singleReservation->giveAwayAt()->format('Y-m-d H:i:s');
+        /** @var Reservation $reservation */
+        foreach ($this->repository->getAll() as $reservation) {
+            if (!$reservation->bookId()->equals($bookId)) {
+                continue;
             }
 
-            if ($singleReservation->bookId()->equals($bookId)) {
-                $reservations[] = new ReservationView((string) $singleReservation->id(), $singleReservation->email(), $givenAwayAt);
-            }
+            $views[] = new ReservationView(
+                (string) $reservation->id(),
+                $reservation->email(),
+                ($reservation->isGivenAway()) ? $reservation->giveAwayAt()->format('Y-m-d H:i:s') : null
+            );
         }
 
-        return $reservations;
+        return $views;
     }
 }

@@ -6,10 +6,11 @@ use Clearcode\EHLibrary\Application\Projection\BookView;
 use Clearcode\EHLibrary\Application\Projection\ListOfBooksProjection;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Model\Book;
+use Clearcode\EHLibrary\Model\BookRepository;
 
 class LocalListOfBooksProjection implements ListOfBooksProjection
 {
-    /** @var LocalBookRepository */
+    /** @var BookRepository */
     private $repository;
 
     public function __construct()

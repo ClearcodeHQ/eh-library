@@ -9,21 +9,12 @@ interface ReservationRepository
     /**
      * @param Reservation $reservation
      */
-    public function add(Reservation $reservation);
+    public function save(Reservation $reservation);
 
     /**
-     * @param UuidInterface $bookId
-     *
-     * @throws \LogicException
-     *
      * @return Reservation[]
      */
-    public function countOfBook(UuidInterface $bookId);
-
-    /**
-     * @return int
-     */
-    public function count();
+    public function getAll();
 
     /**
      * @param UuidInterface $reservationId

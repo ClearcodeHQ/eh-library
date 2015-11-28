@@ -26,6 +26,6 @@ class GiveAwayBookInReservation
         $reservation = $this->reservations->get(Uuid::fromString($reservationId));
         $reservation->giveAway();
 
-        $this->reservations->add($reservation);
+        $this->reservations->save($reservation);
     }
 }

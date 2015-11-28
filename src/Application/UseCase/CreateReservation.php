@@ -25,6 +25,6 @@ class CreateReservation
      */
     public function create($bookId, $email)
     {
-        $this->reservations->add(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
+        $this->reservations->save(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
     }
 }

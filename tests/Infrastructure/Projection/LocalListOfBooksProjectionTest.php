@@ -37,6 +37,12 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_returns_empty_array_when_no_books()
+    {
+        $this->assertEmpty($this->projection->get());
+    }
+
+    /** @test */
     public function it_returns_books_in_library_paginated()
     {
         $this->addBook(Uuid::fromString('a7f0a5b1-b65a-4f9b-905b-082e255f6038'), 'Domain-Driven Design', 'Eric Evans', '0321125215');
@@ -54,10 +60,8 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = LocalStorage::instance(true);
-        $this->storage->clear();
-
         $this->repository = new LocalBookRepository();
+        $this->repository->clear();
         $this->projection = new LocalListOfBooksProjection();
     }
 

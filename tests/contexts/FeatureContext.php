@@ -32,6 +32,7 @@ class FeatureContext extends BehatContext
     {
         LocalStorage::instance(true)->clear();
         $this->bookRepository()->clear();
+        $this->reservationRepository()->clear();
     }
 
     /**
@@ -54,7 +55,7 @@ class FeatureContext extends BehatContext
      */
     public function thereIsReservationForBy($bookId, $email)
     {
-        $this->reservationRepository()->add(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
+        $this->reservationRepository()->save(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
     }
 
     /**
@@ -67,7 +68,7 @@ class FeatureContext extends BehatContext
         array_shift($reservationsData);
 
         foreach ($reservationsData as $reservationData) {
-            $this->reservationRepository()->add(new Reservation(Uuid::fromString($reservationData[0]), Uuid::fromString($reservationData[1]), $reservationData[2]));
+            $this->reservationRepository()->save(new Reservation(Uuid::fromString($reservationData[0]), Uuid::fromString($reservationData[1]), $reservationData[2]));
         }
     }
 
@@ -79,7 +80,7 @@ class FeatureContext extends BehatContext
         $reservation = $this->reservationRepository()->get(Uuid::fromString($reservationId));
         $reservation->giveAway();
 
-        $this->reservationRepository()->add($reservation);
+        $this->reservationRepository()->save($reservation);
     }
 
     /**
@@ -172,7 +173,7 @@ class FeatureContext extends BehatContext
      */
     public function thereShouldBeReservation($expectedReservationCount)
     {
-        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->count());
+        \PHPUnit_Framework_Assert::assertCount((int) $expectedReservationCount, $this->reservationRepository()->getAll());
     }
 
     /**
@@ -180,7 +181,7 @@ class FeatureContext extends BehatContext
      */
     public function thereShouldBeReservationFor($expectedReservationCount, $bookId)
     {
-        \PHPUnit_Framework_Assert::assertEquals($expectedReservationCount, $this->reservationRepository()->countOfBook(Uuid::fromString($bookId)));
+        \PHPUnit_Framework_Assert::assertCount((int) $expectedReservationCount, (new LocalListReservationsForBookProjection())->get(Uuid::fromString($bookId)));
     }
 
     /**

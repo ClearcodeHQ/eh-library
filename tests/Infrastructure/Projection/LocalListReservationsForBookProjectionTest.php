@@ -4,7 +4,6 @@ namespace tests\Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\ReservationView;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
@@ -14,8 +13,6 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
 {
     /** @var LocalReservationRepository */
     private $repository;
-    /** @var LocalStorage */
-    private $storage;
     /** @var LocalListReservationsForBookProjection */
     private $projection;
 
@@ -39,7 +36,7 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
     }
 
     /** @test */
-    public function it_returns_empty_when_no_reservations()
+    public function it_returns_empty_array_when_no_reservations()
     {
         $this->assertEmpty($this->projection->get(Uuid::uuid4()));
     }
@@ -47,17 +44,15 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
     /** {@inheritdoc} */
     protected function setUp()
     {
-        $this->storage = LocalStorage::instance(true);
-        $this->storage->clear();
-
         $this->repository = new LocalReservationRepository();
+        $this->repository->clear();
+
         $this->projection = new LocalListReservationsForBookProjection();
     }
 
     /** {@inheritdoc} */
     protected function tearDown()
     {
-        $this->storage    = null;
         $this->repository = null;
         $this->projection = null;
     }
@@ -70,6 +65,6 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
             $reservation->giveAway();
         }
 
-        $this->repository->add($reservation);
+        $this->repository->save($reservation);
     }
 }

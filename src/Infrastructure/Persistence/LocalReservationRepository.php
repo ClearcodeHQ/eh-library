@@ -4,58 +4,52 @@ namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
 use Clearcode\EHLibrary\Model\Reservation;
 use Clearcode\EHLibrary\Model\ReservationRepository;
+use Everzet\PersistedObjects\AccessorObjectIdentifier;
+use Everzet\PersistedObjects\FileRepository;
 use Ramsey\Uuid\UuidInterface;
 
 class LocalReservationRepository implements ReservationRepository
 {
-    /** @var LocalStorage */
-    private $storage;
+    /** @var FileRepository */
+    private $file;
 
-    public function __construct()
+    public function clear()
     {
-        $this->storage = LocalStorage::instance();
+        $this->file->clear();
     }
 
     /** {@inheritdoc} */
-    public function add(Reservation $reservation)
+    public function save(Reservation $reservation)
     {
-        $this->storage->save('reservation_'.(string) $reservation->id(), $reservation);
+        $this->file->save($reservation);
     }
 
     /** {@inheritdoc} */
-    public function countOfBook(UuidInterface $bookId)
+    public function getAll()
     {
-        $reservations = [];
-
-        /** @var Reservation $reservation */
-        foreach ($this->storage->find('reservation_') as $reservation) {
-            if ($reservation->bookId()->equals($bookId)) {
-                $reservations[] = $reservation;
-            }
-        }
-
-        return count($reservations);
-    }
-
-    /** {@inheritdoc} */
-    public function count()
-    {
-        return count($this->storage->find('reservation_'));
+        return $this->file->getAll();
     }
 
     /** {@inheritdoc} */
     public function remove(UuidInterface $reservationId)
     {
-        $this->storage->remove('reservation_'.(string) $reservationId);
+        $reservation = $this->get($reservationId);
+
+        $this->file->remove($reservation);
     }
 
-    /**
-     * @param UuidInterface $reservationId
-     *
-     * @return Reservation
-     */
+    /** {@inheritdoc} */
     public function get(UuidInterface $reservationId)
     {
-        return $this->storage->get('reservation_'.(string) $reservationId);
+        if (null === $reservation = $this->file->findById($reservationId)) {
+            throw new \DomainException(sprintf('Reservation with id %s does not exist.', $reservationId));
+        }
+
+        return $reservation;
+    }
+
+    public function __construct()
+    {
+        $this->file = new FileRepository('cache/reservations.db', new AccessorObjectIdentifier('id'));
     }
 }
