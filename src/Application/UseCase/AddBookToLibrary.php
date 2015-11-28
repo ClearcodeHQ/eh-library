@@ -20,10 +20,10 @@ class AddBookToLibrary
     }
 
     /**
-     * @param $bookId
-     * @param $title
-     * @param $authors
-     * @param $isbn
+     * @param string $bookId
+     * @param string $title
+     * @param string $authors
+     * @param string $isbn
      */
     public function add($bookId, $title, $authors, $isbn)
     {

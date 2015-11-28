@@ -19,7 +19,7 @@ class GiveAwayBookInReservation
     }
 
     /**
-     * @param $reservationId
+     * @param string $reservationId
      */
     public function giveAway($reservationId)
     {
