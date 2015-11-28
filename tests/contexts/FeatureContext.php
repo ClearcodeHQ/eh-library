@@ -12,6 +12,7 @@ use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
+use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
@@ -139,6 +140,14 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @When /^I list reservations for book "([^"]*)"$/
+     */
+    public function iListReservationsForBook($bookId)
+    {
+        $this->projection = (new LocalListReservationsForBookProjection())->get(Uuid::fromString($bookId));
+    }
+
+    /**
      * @Then /^I should have (\d+) book in library$/
      */
     public function iShouldHaveBookInLibrary($expectedBookCount)
@@ -149,10 +158,11 @@ class FeatureContext extends BehatContext
     /**
      * @Then /^I should see (\d+) books$/
      * @Then /^I should see (\d+) book$/
+     * @Then /^I should see (\d+) reservations$/
      */
-    public function iShouldSeeBooks($expectedBookCount)
+    public function iShouldSeeBooks($expectedViewsCount)
     {
-        \PHPUnit_Framework_Assert::assertCount((int) $expectedBookCount, $this->projection);
+        \PHPUnit_Framework_Assert::assertCount((int) $expectedViewsCount, $this->projection);
     }
 
     /**

@@ -14,10 +14,10 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var LocalBookRepository */
     private $repository;
-    /** @var LocalListOfBooksProjection */
-    private $projection;
     /** @var LocalStorage */
     private $storage;
+    /** @var LocalListOfBooksProjection */
+    private $projection;
 
     /** @test */
     public function it_returns_books_in_library()

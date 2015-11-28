@@ -10,7 +10,7 @@ class Reservation
     private $reservationId;
     /** @var UuidInterface */
     private $bookId;
-    /** @var int */
+    /** @var string */
     private $email;
     /** @var \DateTime */
     private $givenAwayAt;
@@ -50,16 +50,32 @@ class Reservation
     /**
      * @return UuidInterface
      */
+    public function id()
+    {
+        return $this->reservationId;
+    }
+
+    /**
+     * @return UuidInterface
+     */
     public function bookId()
     {
         return $this->bookId;
     }
 
     /**
-     * @return UuidInterface
+     * @return \DateTime
      */
-    public function id()
+    public function giveAwayAt()
     {
-        return $this->reservationId;
+        return $this->givenAwayAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function email()
+    {
+        return $this->email;
     }
 }

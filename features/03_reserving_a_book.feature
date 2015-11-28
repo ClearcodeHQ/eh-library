@@ -5,9 +5,9 @@ Feature: Reserving a book
 
   Background:
     Given there are books
-      | id                                   | title                | authors                                      | isbn           |
-      | a7f0a5b1-b65a-4f9b-905b-082e255f6038 | Domain-Driven Design | Eric Evans                                   | 0321125215     |
-      | 38483e7a-e815-4657-bc94-adc83047577e | REST in Practice     | Jim Webber, Savas Parastatidis, Ian Robinson | 978-0596805821 |
+        | id                                   | title                | authors                                      | isbn           |
+        | a7f0a5b1-b65a-4f9b-905b-082e255f6038 | Domain-Driven Design | Eric Evans                                   | 0321125215     |
+        | 38483e7a-e815-4657-bc94-adc83047577e | REST in Practice     | Jim Webber, Savas Parastatidis, Ian Robinson | 978-0596805821 |
 
   Scenario: Reserving a book
      When I reserve book "a7f0a5b1-b65a-4f9b-905b-082e255f6038" as "employee@clearcode.cc"

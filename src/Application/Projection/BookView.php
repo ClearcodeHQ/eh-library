@@ -4,7 +4,7 @@ namespace Clearcode\EHLibrary\Application\Projection;
 
 final class BookView
 {
-    /** @var int */
+    /** @var string */
     public $bookId;
     /** @var string */
     public $title;
@@ -14,7 +14,7 @@ final class BookView
     public $isbn;
 
     /**
-     * @param int    $bookId
+     * @param string $bookId
      * @param string $title
      * @param string $authors
      * @param string $isbn
