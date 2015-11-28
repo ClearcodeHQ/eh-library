@@ -12,6 +12,8 @@ class Reservation
     private $bookId;
     /** @var int */
     private $email;
+    /** @var \DateTime */
+    private $givenAwayAt;
 
     /**
      * @param UuidInterface $reservationId
@@ -23,6 +25,26 @@ class Reservation
         $this->reservationId = $reservationId;
         $this->bookId        = $bookId;
         $this->email         = $email;
+    }
+
+    /**
+     * @throws \DomainException
+     */
+    public function giveAway()
+    {
+        if ($this->isGivenAway()) {
+            throw new \DomainException(sprintf('Book with id %s was already given away.', $this->bookId));
+        }
+
+        $this->givenAwayAt = new \DateTime();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGivenAway()
+    {
+        return $this->givenAwayAt instanceof \DateTime;
     }
 
     /**

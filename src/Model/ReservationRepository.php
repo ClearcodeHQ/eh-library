@@ -29,4 +29,11 @@ interface ReservationRepository
      * @param UuidInterface $reservationId
      */
     public function remove(UuidInterface $reservationId);
+
+    /**
+     * @param UuidInterface $reservationId
+     *
+     * @return Reservation
+     */
+    public function get(UuidInterface $reservationId);
 }

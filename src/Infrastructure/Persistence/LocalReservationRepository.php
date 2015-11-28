@@ -48,4 +48,14 @@ class LocalReservationRepository implements ReservationRepository
     {
         $this->storage->remove('reservation_'.(string) $reservationId);
     }
+
+    /**
+     * @param UuidInterface $reservationId
+     *
+     * @return Reservation
+     */
+    public function get(UuidInterface $reservationId)
+    {
+        return $this->storage->get('reservation_'.(string) $reservationId);
+    }
 }

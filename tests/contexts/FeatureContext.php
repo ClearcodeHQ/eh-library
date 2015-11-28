@@ -6,6 +6,7 @@ use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
+use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
@@ -14,10 +15,15 @@ use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @todo propably catching exceptions could be done with listener
+ */
 class FeatureContext extends BehatContext
 {
     /** @var array */
     private $projection;
+    /** @var \Exception[] */
+    private $exceptions;
 
     /** @BeforeScenario */
     public function clearStorage()
@@ -63,6 +69,17 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^book from reservation "([^"]*)" was given away$/
+     */
+    public function bookFromReservationWasGivenAway($reservationId)
+    {
+        $reservation = $this->reservationRepository()->get(Uuid::fromString($reservationId));
+        $reservation->giveAway();
+
+        $this->reservationRepository()->add($reservation);
+    }
+
+    /**
      * @When /^I add book$/
      */
     public function iAddBook(TableNode $table)
@@ -103,6 +120,12 @@ class FeatureContext extends BehatContext
      */
     public function iGiveAwayBookFormReservation($reservationId)
     {
+        try {
+            $useCase = new GiveAwayBookInReservation($this->reservationRepository());
+            $useCase->giveAway($reservationId);
+        } catch (\Exception $e) {
+            $this->exceptions[] = $e;
+        }
     }
 
     /**
@@ -144,6 +167,27 @@ class FeatureContext extends BehatContext
      */
     public function bookInReservationShouldBeGivenAway($reservationId)
     {
+        $reservation = $this->reservationRepository()->get(Uuid::fromString($reservationId));
+
+        \PHPUnit_Framework_Assert::assertTrue($reservation->isGivenAway());
+    }
+
+    /**
+     * @Then /^I should be warned that book is already given away$/
+     */
+    public function iShouldBeWarnedThatBookIsAlreadyGivenAway()
+    {
+        //@todo listener for this, custom exception
+
+        $result = false;
+
+        foreach ($this->exceptions as $exception) {
+            if ($exception instanceof \DomainException) {
+                $result = true;
+            }
+        }
+
+        \PHPUnit_Framework_Assert::assertTrue($result);
     }
 
     private function bookRepository()
