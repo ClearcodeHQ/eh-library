@@ -37,7 +37,7 @@ class LocalReservationRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DomainException
+     * @expectedException \Clearcode\EHLibrary\Model\ReservationDoesNotExist
      */
     public function it_fails_when_reservation_with_id_does_not_exist()
     {
@@ -60,7 +60,7 @@ class LocalReservationRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DomainException
+     * @expectedException \Clearcode\EHLibrary\Model\ReservationDoesNotExist
      */
     public function it_fails_when_reservation_to_remove_does_not_exist()
     {

@@ -28,12 +28,12 @@ final class Reservation implements Aggregate
     }
 
     /**
-     * @throws \DomainException
+     * @throws BookInReservationAlreadyGivenAway
      */
     public function giveAway()
     {
         if ($this->isGivenAway()) {
-            throw new \DomainException(sprintf('Book with id %s was already given away.', $this->bookId));
+            throw new BookInReservationAlreadyGivenAway(sprintf('Book with id %s in reservation with id %s was already given away.', $this->bookId, $this->reservationId));
         }
 
         $this->givenAwayAt = new \DateTime();
@@ -66,7 +66,7 @@ final class Reservation implements Aggregate
     /**
      * @return \DateTime
      */
-    public function giveAwayAt()
+    public function givenAwayAt()
     {
         return $this->givenAwayAt;
     }

@@ -33,7 +33,7 @@ class LocalListReservationsForBookProjection implements ListReservationsForBookP
             $views[] = new ReservationView(
                 (string) $reservation->id(),
                 $reservation->email(),
-                ($reservation->isGivenAway()) ? $reservation->giveAwayAt()->format('Y-m-d H:i:s') : null
+                ($reservation->isGivenAway()) ? $reservation->givenAwayAt()->format('Y-m-d H:i:s') : null
             );
         }
 

@@ -3,6 +3,7 @@
 namespace Clearcode\EHLibrary\Infrastructure\Persistence;
 
 use Clearcode\EHLibrary\Model\Reservation;
+use Clearcode\EHLibrary\Model\ReservationDoesNotExist;
 use Clearcode\EHLibrary\Model\ReservationRepository;
 use Everzet\PersistedObjects\AccessorObjectIdentifier;
 use Everzet\PersistedObjects\FileRepository;
@@ -42,7 +43,7 @@ class LocalReservationRepository implements ReservationRepository
     public function get(UuidInterface $reservationId)
     {
         if (null === $reservation = $this->file->findById($reservationId)) {
-            throw new \DomainException(sprintf('Reservation with id %s does not exist.', $reservationId));
+            throw new ReservationDoesNotExist(sprintf('Reservation with id %s does not exist.', $reservationId));
         }
 
         return $reservation;

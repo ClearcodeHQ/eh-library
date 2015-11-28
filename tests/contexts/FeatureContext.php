@@ -13,6 +13,7 @@ use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
 use Clearcode\EHLibrary\Model\Book;
+use Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
 
@@ -204,7 +205,7 @@ class FeatureContext extends BehatContext
      */
     public function iShouldBeWarnedThatBookIsAlreadyGivenAway()
     {
-        \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(\DomainException::class));
+        \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(BookInReservationAlreadyGivenAway::class));
     }
 
     private function bookRepository()

@@ -18,11 +18,15 @@ interface ReservationRepository
 
     /**
      * @param UuidInterface $reservationId
+     *
+     * @throws ReservationDoesNotExist
      */
     public function remove(UuidInterface $reservationId);
 
     /**
      * @param UuidInterface $reservationId
+     *
+     * @throws ReservationDoesNotExist
      *
      * @return Reservation
      */
