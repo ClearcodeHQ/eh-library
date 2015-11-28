@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
 use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
 use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
+use Clearcode\EHLibrary\Application\UseCase\GiveBackBookFromReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
@@ -126,6 +127,15 @@ class FeatureContext extends BehatContext
         } catch (\Exception $e) {
             $this->exceptions[] = $e;
         }
+    }
+
+    /**
+     * @When /^I give back a book from reservation "([^"]*)"$/
+     */
+    public function iGiveBackABookFromReservation($reservationId)
+    {
+        $useCase = new GiveBackBookFromReservation($this->reservationRepository());
+        $useCase->giveBack($reservationId);
     }
 
     /**
