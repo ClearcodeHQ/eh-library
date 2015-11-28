@@ -4,7 +4,7 @@ namespace Clearcode\EHLibrary\Model;
 
 use Ramsey\Uuid\UuidInterface;
 
-class Reservation
+final class Reservation implements Aggregate
 {
     /** @var UuidInterface */
     private $reservationId;
