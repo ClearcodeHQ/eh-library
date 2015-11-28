@@ -10,7 +10,6 @@ use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
 use Clearcode\EHLibrary\Application\UseCase\GiveBackBookFromReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
 use Clearcode\EHLibrary\Model\Book;
@@ -28,9 +27,8 @@ class FeatureContext extends BehatContext
     private $exceptions;
 
     /** @BeforeScenario */
-    public function clearStorage()
+    public function clearDatabase()
     {
-        LocalStorage::instance(true)->clear();
         $this->bookRepository()->clear();
         $this->reservationRepository()->clear();
     }

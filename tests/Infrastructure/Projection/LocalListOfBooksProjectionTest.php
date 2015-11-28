@@ -4,7 +4,6 @@ namespace tests\Clearcode\EHLibrary\Infrastructure\Projection;
 
 use Clearcode\EHLibrary\Application\Projection\BookView;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
-use Clearcode\EHLibrary\Infrastructure\Persistence\LocalStorage;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Model\Book;
 use Ramsey\Uuid\Uuid;
@@ -14,8 +13,6 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var LocalBookRepository */
     private $repository;
-    /** @var LocalStorage */
-    private $storage;
     /** @var LocalListOfBooksProjection */
     private $projection;
 
@@ -68,7 +65,6 @@ class LocalListOfBooksProjectionTest extends \PHPUnit_Framework_TestCase
     /** {@inheritdoc} */
     protected function tearDown()
     {
-        $this->storage    = null;
         $this->repository = null;
         $this->projection = null;
     }
