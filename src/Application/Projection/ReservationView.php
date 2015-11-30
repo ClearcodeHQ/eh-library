@@ -2,7 +2,7 @@
 
 namespace Clearcode\EHLibrary\Application\Projection;
 
-class ReservationView
+final class ReservationView
 {
     /** @var string */
     public $reservationId;

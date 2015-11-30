@@ -3,7 +3,7 @@
 namespace Clearcode\EHLibrary\Application\UseCase;
 
 use Clearcode\EHLibrary\Model\ReservationRepository;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GiveAwayBookInReservation
 {
@@ -19,11 +19,11 @@ class GiveAwayBookInReservation
     }
 
     /**
-     * @param string $reservationId
+     * @param UuidInterface $reservationId
      */
-    public function giveAway($reservationId)
+    public function giveAway(UuidInterface $reservationId)
     {
-        $reservation = $this->reservations->get(Uuid::fromString($reservationId));
+        $reservation = $this->reservations->get($reservationId);
         $reservation->giveAway();
 
         $this->reservations->save($reservation);
