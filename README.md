@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ClearcodeHQ/eh-library.svg?branch=master)](https://travis-ci.org/ClearcodeHQ/eh-library)
+
 # EH-library Application for rest api course
 
 This repository is a simple model which could be used to build REST API.
