@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/ClearcodeHQ/eh-library.svg?branch=master)](https://travis-ci.org/ClearcodeHQ/eh-library)
 
+[![Coverage Status](https://coveralls.io/repos/ClearcodeHQ/eh-library/badge.svg?branch=master&service=github)](https://coveralls.io/github/ClearcodeHQ/eh-library?branch=master)
+
 # EH-library Application for rest api course
 
 This repository is a simple model which could be used to build REST API.
