@@ -51,6 +51,6 @@ class LocalReservationRepository implements ReservationRepository
 
     public function __construct()
     {
-        $this->file = new FileRepository('cache/reservations.db', new AccessorObjectIdentifier('id'));
+        $this->file = new FileRepository(__DIR__.'/../../../cache/reservations.db', new AccessorObjectIdentifier('id'));
     }
 }
