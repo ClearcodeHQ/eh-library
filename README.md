@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/ClearcodeHQ/eh-library.svg?branch=master)](https://travis-ci.org/ClearcodeHQ/eh-library)
-
 [![Coverage Status](https://coveralls.io/repos/ClearcodeHQ/eh-library/badge.svg?branch=master&service=github)](https://coveralls.io/github/ClearcodeHQ/eh-library?branch=master)
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ClearcodeHQ/eh-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ClearcodeHQ/eh-library/?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/565c16c64052e8003b00000e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/565c16c64052e8003b00000e)
 
 # EH-library Application for rest api course
