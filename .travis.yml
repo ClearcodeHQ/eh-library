@@ -13,5 +13,8 @@ install:
   - composer update --prefer-dist
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - vendor/behat/behat/bin/behat
+
+after_script:
+  - vendor/bin/coveralls
