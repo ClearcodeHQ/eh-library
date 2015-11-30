@@ -25,7 +25,7 @@ class AddBookToLibrary
      * @param string        $authors
      * @param string        $isbn
      */
-    public function add($bookId, $title, $authors, $isbn)
+    public function add(UuidInterface $bookId, $title, $authors, $isbn)
     {
         $this->books->save(new Book($bookId, $title, $authors, $isbn));
     }
