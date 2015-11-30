@@ -2,6 +2,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/ClearcodeHQ/eh-library/badge.svg?branch=master&service=github)](https://coveralls.io/github/ClearcodeHQ/eh-library?branch=master)
 
+[![Dependency Status](https://www.versioneye.com/user/projects/565c16c64052e8003b00000e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/565c16c64052e8003b00000e)
+
 # EH-library Application for rest api course
 
 This repository is a simple model which could be used to build REST API.
