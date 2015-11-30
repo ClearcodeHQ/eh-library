@@ -3,7 +3,7 @@
 namespace Clearcode\EHLibrary\Application\UseCase;
 
 use Clearcode\EHLibrary\Model\ReservationRepository;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GiveBackBookFromReservation
 {
@@ -19,10 +19,10 @@ class GiveBackBookFromReservation
     }
 
     /**
-     * @param string $reservationId
+     * @param UuidInterface $reservationId
      */
-    public function giveBack($reservationId)
+    public function giveBack(UuidInterface $reservationId)
     {
-        $this->reservations->remove(Uuid::fromString($reservationId));
+        $this->reservations->remove($reservationId);
     }
 }

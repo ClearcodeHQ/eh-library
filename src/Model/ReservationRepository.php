@@ -31,4 +31,11 @@ interface ReservationRepository
      * @return Reservation
      */
     public function get(UuidInterface $reservationId);
+
+    /**
+     * @param UuidInterface $bookId
+     *
+     * @return bool
+     */
+    public function existsAlreadyGivenOfBook(UuidInterface $bookId);
 }

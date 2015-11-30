@@ -76,6 +76,35 @@ class LocalReservationRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_check_if_reservation_for_book_exists_and_book_was_already_given_away()
+    {
+        $bookId      = Uuid::uuid4();
+        $reservation = new Reservation(Uuid::uuid4(), $bookId, 'employee@clearcode.cc');
+        $reservation->giveAway();
+
+        $this->repository->save($reservation);
+
+        $this->assertTrue($this->repository->existsAlreadyGivenOfBook($bookId));
+    }
+
+    /** @test */
+    public function it_check_if_reservation_for_book_exists_and_book_was_not_already_given_away()
+    {
+        $bookId      = Uuid::uuid4();
+        $reservation = new Reservation(Uuid::uuid4(), $bookId, 'employee@clearcode.cc');
+
+        $this->repository->save($reservation);
+
+        $this->assertFalse($this->repository->existsAlreadyGivenOfBook($bookId));
+    }
+
+    /** @test */
+    public function it_check_if_reservation_for_book_does_not_exists()
+    {
+        $this->assertFalse($this->repository->existsAlreadyGivenOfBook(Uuid::uuid4()));
+    }
+
+    /** @test */
     public function it_can_be_cleared()
     {
         $reservation1 = new Reservation(Uuid::uuid4(), Uuid::uuid4(), 'employee@clearcode.cc');

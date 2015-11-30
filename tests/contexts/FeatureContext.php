@@ -88,7 +88,7 @@ class FeatureContext extends BehatContext
 
         $this->execute(function () use ($bookData) {
             $useCase = new AddBookToLibrary($this->bookRepository());
-            $useCase->add($bookData[0], $bookData[1], $bookData[2], $bookData[3]);
+            $useCase->add(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]);
         });
     }
 
@@ -119,7 +119,7 @@ class FeatureContext extends BehatContext
     {
         $this->execute(function () use ($bookId, $email) {
             $useCase = new CreateReservation($this->reservationRepository());
-            $useCase->create($bookId, $email);
+            $useCase->create(Uuid::fromString($bookId), $email);
         });
     }
 
@@ -130,7 +130,7 @@ class FeatureContext extends BehatContext
     {
         $this->execute(function () use ($reservationId) {
             $useCase = new GiveAwayBookInReservation($this->reservationRepository());
-            $useCase->giveAway($reservationId);
+            $useCase->giveAway(Uuid::fromString($reservationId));
         });
     }
 
@@ -141,7 +141,7 @@ class FeatureContext extends BehatContext
     {
         $this->execute(function () use ($reservationId) {
             $useCase = new GiveBackBookFromReservation($this->reservationRepository());
-            $useCase->giveBack($reservationId);
+            $useCase->giveBack(Uuid::fromString($reservationId));
         });
     }
 

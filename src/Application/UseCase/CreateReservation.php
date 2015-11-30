@@ -5,6 +5,7 @@ namespace Clearcode\EHLibrary\Application\UseCase;
 use Clearcode\EHLibrary\Model\Reservation;
 use Clearcode\EHLibrary\Model\ReservationRepository;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class CreateReservation
 {
@@ -20,11 +21,11 @@ class CreateReservation
     }
 
     /**
-     * @param string $bookId
-     * @param string $email
+     * @param UuidInterface $bookId
+     * @param string        $email
      */
-    public function create($bookId, $email)
+    public function create(UuidInterface $bookId, $email)
     {
-        $this->reservations->save(new Reservation(Uuid::uuid4(), Uuid::fromString($bookId), $email));
+        $this->reservations->save(new Reservation(Uuid::uuid4(), $bookId, $email));
     }
 }

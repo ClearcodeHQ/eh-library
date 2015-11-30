@@ -4,7 +4,7 @@ namespace Clearcode\EHLibrary\Application\UseCase;
 
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookRepository;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class AddBookToLibrary
 {
@@ -20,13 +20,13 @@ class AddBookToLibrary
     }
 
     /**
-     * @param string $bookId
-     * @param string $title
-     * @param string $authors
-     * @param string $isbn
+     * @param UuidInterface $bookId
+     * @param string        $title
+     * @param string        $authors
+     * @param string        $isbn
      */
-    public function add($bookId, $title, $authors, $isbn)
+    public function add(UuidInterface $bookId, $title, $authors, $isbn)
     {
-        $this->books->save(new Book(Uuid::fromString($bookId), $title, $authors, $isbn));
+        $this->books->save(new Book($bookId, $title, $authors, $isbn));
     }
 }

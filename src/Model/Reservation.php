@@ -27,13 +27,10 @@ final class Reservation implements Aggregate
         $this->email         = $email;
     }
 
-    /**
-     * @throws BookInReservationAlreadyGivenAway
-     */
     public function giveAway()
     {
         if ($this->isGivenAway()) {
-            throw new BookInReservationAlreadyGivenAway(sprintf('Book with id %s in reservation with id %s was already given away.', $this->bookId, $this->reservationId));
+            return;
         }
 
         $this->givenAwayAt = new \DateTime();

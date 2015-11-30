@@ -15,18 +15,6 @@ class ReservationTest extends \PHPUnit_Framework_TestCase
         $reservation->giveAway();
 
         $this->assertTrue($reservation->isGivenAway());
-        $this->assertNotNull($reservation->givenAwayAt());
-    }
-
-    /**
-     * @test
-     * @expectedException \Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway
-     */
-    public function it_fails_when_try_to_give_away_book_already_given_away()
-    {
-        $reservation = new Reservation(Uuid::uuid4(), Uuid::uuid4(), 'employee@clearcode.cc');
-        $reservation->giveAway();
-
-        $reservation->giveAway();
+        $this->assertInstanceOf(\DateTime::class, $reservation->givenAwayAt());
     }
 }

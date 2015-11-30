@@ -18,5 +18,5 @@ Feature: Give away a book
 
   Scenario: Give away book for second time
     Given book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00" was given away
-     When I give away book form reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00"
+     When I give away book form reservation "75ad9b66-db69-404c-80a0-6acdfaf668d6"
      Then I should be warned that book is already given away

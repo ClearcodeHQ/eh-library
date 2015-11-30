@@ -31,6 +31,6 @@ class LocalBookRepository implements BookRepository
 
     public function __construct()
     {
-        $this->file = new FileRepository('cache/books.db', new AccessorObjectIdentifier('id'));
+        $this->file = new FileRepository(__DIR__.'/../../../cache/books.db', new AccessorObjectIdentifier('id'));
     }
 }

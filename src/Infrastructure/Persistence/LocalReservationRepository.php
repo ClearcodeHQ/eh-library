@@ -49,8 +49,21 @@ class LocalReservationRepository implements ReservationRepository
         return $reservation;
     }
 
+    /** {@inheritdoc} */
+    public function existsAlreadyGivenOfBook(UuidInterface $bookId)
+    {
+        /** @var Reservation $reservation */
+        foreach ($this->file->getAll() as $reservation) {
+            if ($reservation->bookId()->equals($bookId) && $reservation->isGivenAway()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function __construct()
     {
-        $this->file = new FileRepository('cache/reservations.db', new AccessorObjectIdentifier('id'));
+        $this->file = new FileRepository(__DIR__.'/../../../cache/reservations.db', new AccessorObjectIdentifier('id'));
     }
 }
