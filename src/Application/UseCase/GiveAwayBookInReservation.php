@@ -21,6 +21,8 @@ class GiveAwayBookInReservation
 
     /**
      * @param UuidInterface $reservationId
+     *
+     * @throws BookInReservationAlreadyGivenAway
      */
     public function giveAway(UuidInterface $reservationId)
     {

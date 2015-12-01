@@ -4,14 +4,14 @@ namespace tests\Clearcode\EHLibrary\contexts;
 
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
-use Clearcode\EHLibrary\Application\UseCase\AddBookToLibrary;
+use Clearcode\EHLibrary\Application;
 use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
 use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
 use Clearcode\EHLibrary\Application\UseCase\GiveBackBookFromReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
-use Clearcode\EHLibrary\Infrastructure\Projection\LocalListOfBooksProjection;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
+use Clearcode\EHLibrary\Library;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway;
 use Clearcode\EHLibrary\Model\Reservation;
@@ -23,12 +23,20 @@ class FeatureContext extends BehatContext
     private $projection;
     /** @var \Exception[] */
     private $exceptions;
+    /** @var Library */
+    private $library;
 
     /** @BeforeScenario */
     public function clearDatabase()
     {
         $this->bookRepository()->clear();
         $this->reservationRepository()->clear();
+    }
+
+    /** @BeforeScenario */
+    public function createApplication()
+    {
+        $this->library = new Application();
     }
 
     /**
@@ -87,8 +95,7 @@ class FeatureContext extends BehatContext
         $bookData = $table->getRows()[1];
 
         $this->execute(function () use ($bookData) {
-            $useCase = new AddBookToLibrary($this->bookRepository());
-            $useCase->add(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]);
+            $this->library->addBook(Uuid::fromString($bookData[0]), $bookData[1], $bookData[2], $bookData[3]);
         });
     }
 
@@ -98,7 +105,7 @@ class FeatureContext extends BehatContext
     public function iListBooks()
     {
         $this->project(function () {
-            return (new LocalListOfBooksProjection())->get();
+            return $this->library->listOfBooks();
         });
     }
 
@@ -108,7 +115,7 @@ class FeatureContext extends BehatContext
     public function iListPageOfBooksPaginatedByBooksOnPage($page, $booksPerPage)
     {
         $this->project(function () use ($page, $booksPerPage) {
-            return (new LocalListOfBooksProjection())->get($page, $booksPerPage);
+            return $this->library->listOfBooks($page, $booksPerPage);
         });
     }
 
@@ -118,8 +125,7 @@ class FeatureContext extends BehatContext
     public function iReserveBookAs($bookId, $email)
     {
         $this->execute(function () use ($bookId, $email) {
-            $useCase = new CreateReservation($this->reservationRepository());
-            $useCase->create(Uuid::fromString($bookId), $email);
+            $this->library->createReservation(Uuid::fromString($bookId), $email);
         });
     }
 
@@ -129,8 +135,7 @@ class FeatureContext extends BehatContext
     public function iGiveAwayBookFormReservation($reservationId)
     {
         $this->execute(function () use ($reservationId) {
-            $useCase = new GiveAwayBookInReservation($this->reservationRepository());
-            $useCase->giveAway(Uuid::fromString($reservationId));
+            $this->library->giveAwayBookInReservation(Uuid::fromString($reservationId));
         });
     }
 
@@ -140,8 +145,7 @@ class FeatureContext extends BehatContext
     public function iGiveBackABookFromReservation($reservationId)
     {
         $this->execute(function () use ($reservationId) {
-            $useCase = new GiveBackBookFromReservation($this->reservationRepository());
-            $useCase->giveBack(Uuid::fromString($reservationId));
+            $this->library->giveBackBookFromReservation(Uuid::fromString($reservationId));
         });
     }
 
@@ -151,7 +155,7 @@ class FeatureContext extends BehatContext
     public function iListReservationsForBook($bookId)
     {
         $this->project(function () use ($bookId) {
-            return (new LocalListReservationsForBookProjection())->get(Uuid::fromString($bookId));
+            return $this->library->listReservationsForBook(Uuid::fromString($bookId));
         });
     }
 
