@@ -27,13 +27,16 @@ final class Reservation implements Aggregate
         $this->email         = $email;
     }
 
-    public function giveAway()
+    /**
+     * @param \DateTime $givenAwayAt
+     */
+    public function giveAway(\DateTime $givenAwayAt)
     {
         if ($this->isGivenAway()) {
             return;
         }
 
-        $this->givenAwayAt = new \DateTime();
+        $this->givenAwayAt = $givenAwayAt;
     }
 
     /**

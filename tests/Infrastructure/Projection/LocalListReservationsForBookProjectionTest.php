@@ -62,7 +62,7 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
         $reservation = new Reservation($reservationId, $bookId, $email);
 
         if ($givenAwayAt) {
-            $reservation->giveAway();
+            $reservation->giveAway(new \DateTime());
         }
 
         $this->repository->save($reservation);

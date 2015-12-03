@@ -80,7 +80,7 @@ class FeatureContext extends BehatContext
     public function bookFromReservationWasGivenAway($reservationId)
     {
         $reservation = $this->reservationRepository()->get(Uuid::fromString($reservationId));
-        $reservation->giveAway();
+        $reservation->giveAway(new \DateTime());
 
         $this->reservationRepository()->save($reservation);
     }
@@ -130,12 +130,12 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I give away book form reservation "([^"]*)"$/
+     * @When /^I give away book form reservation "([^"]*)" at "([^"]*)"$/
      */
-    public function iGiveAwayBookFormReservation($reservationId)
+    public function iGiveAwayBookFormReservationAt($reservationId, $givenAwayAt)
     {
-        $this->execute(function () use ($reservationId) {
-            $this->library->giveAwayBookInReservation(Uuid::fromString($reservationId));
+        $this->execute(function () use ($reservationId, $givenAwayAt) {
+            $this->library->giveAwayBookInReservation(Uuid::fromString($reservationId), new \DateTime($givenAwayAt));
         });
     }
 

@@ -34,10 +34,11 @@ interface Library
 
     /**
      * @param UuidInterface $reservationId
+     * @param \DateTime     $givenAwayAt
      *
      * @throws BookInReservationAlreadyGivenAway
      */
-    public function giveAwayBookInReservation(UuidInterface $reservationId);
+    public function giveAwayBookInReservation(UuidInterface $reservationId, \DateTime $givenAwayAt);
 
     /**
      * @param UuidInterface $reservationId

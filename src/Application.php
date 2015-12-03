@@ -33,9 +33,9 @@ final class Application implements Library
     }
 
     /** {@inheritdoc} */
-    public function giveAwayBookInReservation(UuidInterface $reservationId)
+    public function giveAwayBookInReservation(UuidInterface $reservationId, \DateTime $givenAwayAt)
     {
-        (new GiveAwayBookInReservation(new LocalReservationRepository()))->giveAway($reservationId);
+        (new GiveAwayBookInReservation(new LocalReservationRepository()))->giveAway($reservationId, $givenAwayAt);
     }
 
     /** {@inheritdoc} */
