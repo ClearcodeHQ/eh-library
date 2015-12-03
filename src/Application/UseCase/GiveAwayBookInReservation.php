@@ -21,10 +21,11 @@ class GiveAwayBookInReservation
 
     /**
      * @param UuidInterface $reservationId
+     * @param \DateTime     $givenAwayAt
      *
      * @throws BookInReservationAlreadyGivenAway
      */
-    public function giveAway(UuidInterface $reservationId)
+    public function giveAway(UuidInterface $reservationId, \DateTime $givenAwayAt)
     {
         $reservation = $this->reservations->get($reservationId);
 
@@ -32,7 +33,7 @@ class GiveAwayBookInReservation
             throw new BookInReservationAlreadyGivenAway(sprintf('Book with id %s in reservation with id %s was already given away.', $reservation->bookId(), $reservation->id()));
         }
 
-        $reservation->giveAway();
+        $reservation->giveAway($givenAwayAt);
 
         $this->reservations->save($reservation);
     }

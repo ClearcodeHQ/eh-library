@@ -5,24 +5,22 @@ namespace tests\Clearcode\EHLibrary\contexts;
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
 use Clearcode\EHLibrary\Application;
-use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
-use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
-use Clearcode\EHLibrary\Application\UseCase\GiveBackBookFromReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
 use Clearcode\EHLibrary\Library;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway;
+use Clearcode\EHLibrary\Model\CannotGiveBackReservationWhichWasNotGivenAway;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
 
 class FeatureContext extends BehatContext
 {
     /** @var array */
-    private $projection;
+    private $projection = [];
     /** @var \Exception[] */
-    private $exceptions;
+    private $exceptions = [];
     /** @var Library */
     private $library;
 
@@ -82,7 +80,7 @@ class FeatureContext extends BehatContext
     public function bookFromReservationWasGivenAway($reservationId)
     {
         $reservation = $this->reservationRepository()->get(Uuid::fromString($reservationId));
-        $reservation->giveAway();
+        $reservation->giveAway(new \DateTime());
 
         $this->reservationRepository()->save($reservation);
     }
@@ -120,22 +118,24 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I reserve book "([^"]*)" as "([^"]*)"$/
+     * @When /^I create reservation$/
      */
-    public function iReserveBookAs($bookId, $email)
+    public function iCreateReservation(TableNode $table)
     {
-        $this->execute(function () use ($bookId, $email) {
-            $this->library->createReservation(Uuid::fromString($bookId), $email);
+        $reservationsData = $table->getRows()[1];
+
+        $this->execute(function () use ($reservationsData) {
+            $this->library->createReservation(Uuid::fromString($reservationsData[0]), Uuid::fromString($reservationsData[1]), $reservationsData[2]);
         });
     }
 
     /**
-     * @When /^I give away book form reservation "([^"]*)"$/
+     * @When /^I give away book form reservation "([^"]*)" at "([^"]*)"$/
      */
-    public function iGiveAwayBookFormReservation($reservationId)
+    public function iGiveAwayBookFormReservationAt($reservationId, $givenAwayAt)
     {
-        $this->execute(function () use ($reservationId) {
-            $this->library->giveAwayBookInReservation(Uuid::fromString($reservationId));
+        $this->execute(function () use ($reservationId, $givenAwayAt) {
+            $this->library->giveAwayBookInReservation(Uuid::fromString($reservationId), new \DateTime($givenAwayAt));
         });
     }
 
@@ -210,6 +210,14 @@ class FeatureContext extends BehatContext
     public function iShouldBeWarnedThatBookIsAlreadyGivenAway()
     {
         \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(BookInReservationAlreadyGivenAway::class));
+    }
+
+    /**
+     * @Then /^I should be warned that I cannot give back reservation which was not given away$/
+     */
+    public function iShouldBeWarnedThatICannotGiveBackReservationWhichWasNotGivenAway()
+    {
+        \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(CannotGiveBackReservationWhichWasNotGivenAway::class));
     }
 
     private function bookRepository()

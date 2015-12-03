@@ -26,17 +26,19 @@ interface Library
     public function listOfBooks($page = 1, $booksPerPage = null);
 
     /**
+     * @param UuidInterface $reservationId
      * @param UuidInterface $bookId
      * @param string        $email
      */
-    public function createReservation(UuidInterface $bookId, $email);
+    public function createReservation(UuidInterface $reservationId, UuidInterface $bookId, $email);
 
     /**
      * @param UuidInterface $reservationId
+     * @param \DateTime     $givenAwayAt
      *
      * @throws BookInReservationAlreadyGivenAway
      */
-    public function giveAwayBookInReservation(UuidInterface $reservationId);
+    public function giveAwayBookInReservation(UuidInterface $reservationId, \DateTime $givenAwayAt);
 
     /**
      * @param UuidInterface $reservationId

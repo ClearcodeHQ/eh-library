@@ -12,9 +12,12 @@ class ReservationTest extends \PHPUnit_Framework_TestCase
     {
         $reservation = new Reservation(Uuid::uuid4(), Uuid::uuid4(), 'employee@clearcode.cc');
 
-        $reservation->giveAway();
+        $reservation->giveAway(new \DateTime('2016-01-01 00:00:00'));
 
         $this->assertTrue($reservation->isGivenAway());
-        $this->assertInstanceOf(\DateTime::class, $reservation->givenAwayAt());
+        $this->assertEquals(
+            (new \DateTime('2016-01-01 00:00:00'))->format('Y-m-d H:i:s'),
+            $reservation->givenAwayAt()->format('Y-m-d H:i:s')
+        );
     }
 }

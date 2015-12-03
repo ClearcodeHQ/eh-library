@@ -80,7 +80,7 @@ class LocalReservationRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $bookId      = Uuid::uuid4();
         $reservation = new Reservation(Uuid::uuid4(), $bookId, 'employee@clearcode.cc');
-        $reservation->giveAway();
+        $reservation->giveAway(new \DateTime());
 
         $this->repository->save($reservation);
 
