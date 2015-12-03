@@ -5,6 +5,7 @@ namespace Clearcode\EHLibrary;
 use Clearcode\EHLibrary\Application\Projection\BookView;
 use Clearcode\EHLibrary\Application\Projection\ReservationView;
 use Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway;
+use Clearcode\EHLibrary\Model\CannotGiveBackReservationWhichWasNotGivenAway;
 use Ramsey\Uuid\UuidInterface;
 
 interface Library
@@ -42,6 +43,8 @@ interface Library
 
     /**
      * @param UuidInterface $reservationId
+     *
+     * @throws CannotGiveBackReservationWhichWasNotGivenAway
      */
     public function giveBackBookFromReservation(UuidInterface $reservationId);
 
