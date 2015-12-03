@@ -5,9 +5,6 @@ namespace tests\Clearcode\EHLibrary\contexts;
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
 use Clearcode\EHLibrary\Application;
-use Clearcode\EHLibrary\Application\UseCase\CreateReservation;
-use Clearcode\EHLibrary\Application\UseCase\GiveAwayBookInReservation;
-use Clearcode\EHLibrary\Application\UseCase\GiveBackBookFromReservation;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalBookRepository;
 use Clearcode\EHLibrary\Infrastructure\Persistence\LocalReservationRepository;
 use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookProjection;
@@ -120,12 +117,14 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I reserve book "([^"]*)" as "([^"]*)"$/
+     * @When /^I create reservation$/
      */
-    public function iReserveBookAs($bookId, $email)
+    public function iCreateReservation(TableNode $table)
     {
-        $this->execute(function () use ($bookId, $email) {
-            $this->library->createReservation(Uuid::fromString($bookId), $email);
+        $reservationsData = $table->getRows()[1];
+
+        $this->execute(function () use ($reservationsData) {
+            $this->library->createReservation(Uuid::fromString($reservationsData[0]), Uuid::fromString($reservationsData[1]), $reservationsData[2]);
         });
     }
 

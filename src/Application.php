@@ -27,9 +27,9 @@ final class Application implements Library
     }
 
     /** {@inheritdoc} */
-    public function createReservation(UuidInterface $bookId, $email)
+    public function createReservation(UuidInterface $reservationId, UuidInterface $bookId, $email)
     {
-        (new CreateReservation(new LocalReservationRepository()))->create($bookId, $email);
+        (new CreateReservation(new LocalReservationRepository()))->create($reservationId, $bookId, $email);
     }
 
     /** {@inheritdoc} */
