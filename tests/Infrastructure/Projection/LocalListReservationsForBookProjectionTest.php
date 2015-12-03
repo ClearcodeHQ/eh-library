@@ -23,7 +23,7 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
         $bookId2 = Uuid::uuid4();
 
         $this->addReservation(Uuid::fromString('38483e7a-e815-4657-bc94-adc83047577e'), $bookId1, 'employee@clearcode.cc');
-        $this->addReservation(Uuid::fromString('a7f0a5b1-b65a-4f9b-905b-082e255f6038'), $bookId1, 'another.employee@clearcode.cc', true);
+        $this->addReservation(Uuid::fromString('a7f0a5b1-b65a-4f9b-905b-082e255f6038'), $bookId1, 'another.employee@clearcode.cc', new \DateTime('2016-01-01 00:00:00'));
         $this->addReservation(Uuid::uuid4(), $bookId2, 'other.employee@clearcode.cc');
 
         $reservations = $this->projection->get($bookId1);
@@ -33,6 +33,9 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
 
         $this->assertEquals('38483e7a-e815-4657-bc94-adc83047577e', $reservations[0]->reservationId);
         $this->assertEquals('employee@clearcode.cc', $reservations[0]->email);
+        $this->assertEquals('a7f0a5b1-b65a-4f9b-905b-082e255f6038', $reservations[1]->reservationId);
+        $this->assertEquals('another.employee@clearcode.cc', $reservations[1]->email);
+        $this->assertEquals('2016-01-01 00:00:00', $reservations[1]->givenAwayAt);
     }
 
     /** @test */
@@ -57,12 +60,12 @@ class LocalListReservationsForBookProjectionTest extends \PHPUnit_Framework_Test
         $this->projection = null;
     }
 
-    private function addReservation(UuidInterface $reservationId, UuidInterface $bookId, $email, $givenAwayAt = false)
+    private function addReservation(UuidInterface $reservationId, UuidInterface $bookId, $email, \DateTime $givenAwayAt = null)
     {
         $reservation = new Reservation($reservationId, $bookId, $email);
 
-        if ($givenAwayAt) {
-            $reservation->giveAway(new \DateTime());
+        if (null !== $givenAwayAt) {
+            $reservation->giveAway($givenAwayAt);
         }
 
         $this->repository->save($reservation);
