@@ -15,3 +15,7 @@ Feature: Give a book back
     Given book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00" was given away
      When I give back a book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00"
      Then there should be 0 reservations
+
+  Scenario: Give a book back which was not given away
+     When I give back a book from reservation "c4e8ca4b-4528-41ec-8700-856c2f186b00"
+     Then I should be warned that I cannot give back reservation which was not given away

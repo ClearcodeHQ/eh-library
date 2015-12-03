@@ -11,15 +11,16 @@ use Clearcode\EHLibrary\Infrastructure\Projection\LocalListReservationsForBookPr
 use Clearcode\EHLibrary\Library;
 use Clearcode\EHLibrary\Model\Book;
 use Clearcode\EHLibrary\Model\BookInReservationAlreadyGivenAway;
+use Clearcode\EHLibrary\Model\CannotGiveBackReservationWhichWasNotGivenAway;
 use Clearcode\EHLibrary\Model\Reservation;
 use Ramsey\Uuid\Uuid;
 
 class FeatureContext extends BehatContext
 {
     /** @var array */
-    private $projection;
+    private $projection = [];
     /** @var \Exception[] */
-    private $exceptions;
+    private $exceptions = [];
     /** @var Library */
     private $library;
 
@@ -209,6 +210,14 @@ class FeatureContext extends BehatContext
     public function iShouldBeWarnedThatBookIsAlreadyGivenAway()
     {
         \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(BookInReservationAlreadyGivenAway::class));
+    }
+
+    /**
+     * @Then /^I should be warned that I cannot give back reservation which was not given away$/
+     */
+    public function iShouldBeWarnedThatICannotGiveBackReservationWhichWasNotGivenAway()
+    {
+        \PHPUnit_Framework_Assert::assertTrue($this->expectedExceptionWasThrown(CannotGiveBackReservationWhichWasNotGivenAway::class));
     }
 
     private function bookRepository()
